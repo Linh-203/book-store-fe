@@ -1,0 +1,116 @@
+{
+   "products": [
+      {
+         "_id": "FHG49asd8",
+         "productName": "Product A",
+         "price": 300000,
+         "discount": 5,
+         "desc": "description of product",
+         "categoryId": "truyen",
+         "images": [
+            {
+               "url": "https://product.hstatic.net/1000363117/product/toi_ve_cc_af4a7b96100e49c8a9dbbdd1cfc4178c_medium.jpg",
+               "public_id": "mbet2curswzzahvzbduw"
+            }
+         ]
+      },
+      {
+         "_id": "FHG4asdaad98",
+         "productName": "Product 2",
+         "price": 1000,
+         "discount": 10,
+         "desc": "description of product",
+         "categoryId": "phim",
+         "images": [
+            {
+               "url": "https://product.hstatic.net/1000363117/product/tb30-1_7a670519dc344827af0cc77ba6c15afa_medium.jpg",
+               "public_id": "mbet2curswzzahvzbduw"
+            }
+         ]
+      },
+      {
+         "_id": "FHG4ds98",
+         "productName": "Product 3",
+         "price": 4000,
+         "discount": 7,
+         "desc": "description of product",
+         "categoryId": "sach",
+         "images": [
+            {
+               "url": "https://product.hstatic.net/1000363117/product/thiet_ke_chua_co_ten__8__9871b4f2fe3245e49f587d39c5378e87_medium.jpg",
+               "public_id": "mbet2curswzzahvzbduw"
+            }
+         ]
+      },
+      {
+         "_id": "FHG49sad8",
+         "productName": "Product 4",
+         "price": 970000,
+         "discount": 5,
+         "desc": "description of product",
+         "categoryId": "bao",
+         "images": [
+            {
+               "url": "https://product.hstatic.net/1000363117/product/083ff9aa590e12891cd998cd1e2195d6_15a7dceb0aa54404b8bb3bee5140e952_medium.jpg",
+               "public_id": "mbet2curswzzahvzbduw"
+            }
+         ]
+      },
+      {
+         "_id": "FHG498dhg",
+         "productName": "Product 5",
+         "price": 6000,
+         "discount": 5,
+         "desc": "description of product",
+         "categoryId": "manga",
+         "images": [
+            {
+               "url": "https://product.hstatic.net/1000363117/product/thiet_ke_chua_co_ten__40__ec2b0e395b764f6f9c4d7ccbe57d8e4a_medium.jpg",
+               "public_id": "mbet2curswzzahvzbduw"
+            }
+         ]
+      },
+      {
+         "_id": "FHG498dhg",
+         "productName": "Product 6",
+         "price": 6000,
+         "discount": 5,
+         "desc": "description of product",
+         "categoryId": "anime",
+         "images": [
+            {
+               "url": "https://product.hstatic.net/1000363117/product/8935074129512_1f48737ab3ab4530a23afdb9af868380_medium.jpg",
+               "public_id": "mbet2curswzzahvzbduw"
+            }
+         ]
+      },
+      {
+         "_id": "FHG498dsdhg",
+         "productName": "Product 7",
+         "price": 6000,
+         "discount": 5,
+         "desc": "description of product",
+         "categoryId": "aaaa",
+         "images": [
+            {
+               "url": "https://product.hstatic.net/1000363117/product/hanh-phuc-tung-giay-3_338cbab55e21492aa8610bf2167edd07_medium.jpg",
+               "public_id": "mbet2curswzzahvzbduw"
+            }
+         ]
+      },
+      {
+         "_id": "FHG4a98dhg",
+         "productName": "Product 8",
+         "price": 6000,
+         "discount": 5,
+         "desc": "description of product",
+         "categoryId": "truyen",
+         "images": [
+            {
+               "url": "https://product.hstatic.net/1000363117/product/dao-buoc-nhan-gian_04131687f69f4f20b954e6e3ab7fe4cd_medium.jpg",
+               "public_id": "mbet2curswzzahvzbduw"
+            }
+         ]
+      }
+   ]
+}
