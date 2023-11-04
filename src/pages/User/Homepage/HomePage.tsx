@@ -3,42 +3,55 @@ import Banner from './components/Banner';
 import Delivery from './components/Delivery';
 import Card from './components/Card';
 import BtnFilter from './components/BtnFilter';
-import { IProduct } from '../../interfaces/product';
+import { IProduct } from '../../../interfaces/product';
 import { useEffect, useState } from 'react';
 import SubBanner from './components/SubBanner';
 import ThuongHieu from './components/ThuongHieu';
-import { useGetAllProductsQuery, useRemoveProductMutation } from '../../services/product.service';
+import { useGetAllProductsQuery } from '../../../services/product.service';
+import SlideCateHomePage from './components/SlideCategoriesHomePage';
+// import FlashSaleCard from './components/FlashSaleCard';
 const HomePage = () => {
    const { data, isLoading } = useGetAllProductsQuery();
-   console.log(data);
+   // console.log(data);
+   const discountedProducts = data?.product?.filter((product: any) => product.discount > 0);
+   // console.log(discountedProducts);
+   const NoDiscountedProducts = data?.product?.filter((product: any) => product.discount == 0);
    const [item, setItems] = useState<IProduct[]>(data?.product || []);
-   // console.log(item);
-
    const btnFilter = [...new Set(data?.product.map((val: any) => val.categoryId?.cateName))];
    const filterItems = (cate: any) => {
       const newItems = data?.product.filter((data: any) => data.categoryId.cateName === cate);
-      setItems(newItems);
+      setItems(newItems!);
    };
    useEffect(() => {
       if (data && !isLoading) {
          filterItems(data.product[0].categoryId.cateName);
       }
    }, [data]);
-   // const refetch = () => {
-   //    setItems(products);
-   // };
-   // console.log(item);
-   const [remove] = useRemoveProductMutation();
-
    return (
       <div>
          <Helmet>
             <title>Trang chủ</title>
          </Helmet>
+         <SlideCateHomePage />
          <Banner />
+         <div className='text-center p-5'>
+            <h1 className='font-bold text-4xl mt-4 text-red-500'>Flash Sale</h1>
+         </div>
+         <section className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-2 mb-5'>
+            {discountedProducts && discountedProducts?.length > 0 ? (
+               discountedProducts.map((prd, index) => <Card key={index} product={prd} link='/' />)
+            ) : (
+               <></>
+            )}
+         </section>
+         {/* <FlashSaleCard /> */}
          <Delivery />
          <div className='lg:grid lg:grid-cols-4 md:grid md:grid-cols-2 grid grid-cols-1 px-40 gap-10 bg-gray-50 '>
-            {data && !isLoading ? data.product.map((prd, index) => <Card key={index} product={prd} link='/' />) : <></>}
+            {NoDiscountedProducts && !isLoading ? (
+               NoDiscountedProducts.map((prd: any, index: any) => <Card key={index} product={prd} link='/' />)
+            ) : (
+               <></>
+            )}
          </div>
          <div>
             <p className='text-lg font-bold px-40 pt-10'>CÁC DÒNG SẢN PHẨM</p>
@@ -49,7 +62,7 @@ const HomePage = () => {
             <img className='' src='https://theme.hstatic.net/1000363117/1000911694/14/hhori_img1.png?v=471' alt='' />
          </div>
          <BtnFilter btnFilter={btnFilter} filterItems={filterItems} />
-         <div className='lg:grid lg:grid-cols-3 md:grid md:grid-cols-2 grid grid-cols-1 px-40 gap-10 bg-gray-50 '>
+         <div className='lg:grid lg:grid-cols-4 md:grid md:grid-cols-2 grid grid-cols-1 px-40 gap-10 bg-gray-50 '>
             {item && item?.length > 0 ? item.map((prd, index) => <Card key={index} product={prd} link='/' />) : <></>}
          </div>
          <div className='px-40 py-7'>

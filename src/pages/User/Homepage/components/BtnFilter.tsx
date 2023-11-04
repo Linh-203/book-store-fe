@@ -5,7 +5,7 @@ const BtnFilter = ({ btnFilter, filterItems }: any) => {
             {btnFilter.map((data: any, index: number) => (
                <button
                   key={index}
-                  className='btn  text-[#6AAD12] p-1 px-2 mx-5 text-lg font-bold'
+                  className='btn  hover:text-[#00ab9f] hover:underline	focus:underline focus:text-[#00ab9f] p-1 px-2 mx-5 text-lg font-bold'
                   onClick={() => filterItems(data)}
                >
                   {data}

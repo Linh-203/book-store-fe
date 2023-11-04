@@ -2,15 +2,15 @@ import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Divider, Form, Image } from 'antd';
+import { Divider, Form, Image, message } from 'antd';
 import { useGetAllCateQuery } from '../../services/cate.service';
 import { useGetProductByIdQuery, useUpdateProductMutation } from '../../services/product.service';
 import { uploadImages } from '../../api/upload';
 import UploadButton from '../../components/UploadButton/UploadButton';
 import { InputProduct } from '../../interfaces/product';
 const UpdateProduct = () => {
-   const [form] = Form.useForm();
    const { data: cateData } = useGetAllCateQuery();
+   const [form] = Form.useForm();
    const [files, setFiles] = useState<File[]>([]);
    const {
       handleSubmit,
@@ -22,6 +22,8 @@ const UpdateProduct = () => {
    const navigate = useNavigate();
    const { id } = useParams();
    const { data } = useGetProductByIdQuery(id);
+   console.log(data);
+
    useEffect(() => {
       reset({
          name: data?.product?.name,
@@ -29,7 +31,8 @@ const UpdateProduct = () => {
          desc: data?.product?.desc,
          author: data?.product?.author,
          discount: data?.product?.discount,
-         image: data?.product?.image[0].url,
+         image: data?.product?.image[0]?.url,
+         maxQuantity: data?.product?.maxQuantity,
          categoryId: data?.product?.categoryId._id
       });
    }, [data]);
@@ -44,8 +47,9 @@ const UpdateProduct = () => {
       } catch (error) {
          console.log(error);
       }
-      update({ id, item });
-      navigate('/');
+      await update({ id, item });
+      message.success('Product updated successfully');
+      navigate('/admin/products');
    };
    const handleGetFiles = (files: File[]) => {
       form.setFieldValue('images', files);
@@ -91,7 +95,7 @@ const UpdateProduct = () => {
                <div className='mb-4'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>Discount</label>
                   <input
-                     {...register('discount', { required: true, min: 1 })}
+                     {...register('discount', { required: true, min: 0 })}
                      className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                      type='text'
                      placeholder='Discount'
@@ -113,7 +117,7 @@ const UpdateProduct = () => {
                </div>
                <div className='mb-4'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>Current Image</label>
-                  <Image width={200} src={data?.product?.image[0].url} />
+                  <Image width={200} src={data?.product?.image[0]?.url} />
                </div>
                <div className='bg-white mt-10 rounded-lg p-5'>
                   <p className='text-[1.5rem] font-semibold'>Hình ảnh sản phẩm</p>
@@ -131,6 +135,16 @@ const UpdateProduct = () => {
                         name='images'
                      />
                   </Form.Item>
+               </div>
+               <div className='mb-4'>
+                  <label className='block text-gray-700 text-sm font-bold mb-2'>maxQuantity</label>
+                  <input
+                     {...register('maxQuantity', { required: true, min: 0 })}
+                     className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                     type='number'
+                     placeholder='maxQuantity'
+                  />
+                  {errors.maxQuantity && <span>This field is required</span>}
                </div>
                <div className='mb-6'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>Danh muc</label>

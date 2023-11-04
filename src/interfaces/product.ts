@@ -2,12 +2,12 @@ export interface IProduct {
    _id: string;
    name: string;
    price: number;
-   categoryId: string;
+   categoryId: { cateName: string };
    author: string;
    desc: string;
    discount: number;
    // amount: number;
-   image: string[];
+   image: { url: string }[];
    createAt: string;
 }
 export type InputProduct = Omit<IProduct, '_id' | 'createAt'>;

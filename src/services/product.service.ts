@@ -44,6 +44,13 @@ const productApi = createApi({
             method: 'PATCH'
          }),
          invalidatesTags: ['products']
+      }),
+      searchProduct: builder.mutation<{ product: IProduct[] }, string>({
+         query: (search) => ({
+            url: '/products?_q=' + search,
+            method: 'GET'
+         }),
+         invalidatesTags: ['products']
       })
    })
 });
@@ -53,7 +60,8 @@ export const {
    useGetProductByIdQuery,
    useAddProductMutation,
    useUpdateProductMutation,
-   useRemoveProductMutation
+   useRemoveProductMutation,
+   useSearchProductMutation
 } = productApi;
 
 export default productApi;

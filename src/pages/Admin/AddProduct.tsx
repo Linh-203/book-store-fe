@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import { useAddProductMutation } from '../../services/product.service';
 import { useGetAllCateQuery } from '../../services/cate.service';
-import { Divider, Form } from 'antd';
+import { Divider, Form, message } from 'antd';
 import UploadButton from '../../components/UploadButton/UploadButton';
 import { InputProduct } from '../../interfaces/product';
 import { useState } from 'react';
@@ -32,7 +32,8 @@ const AddProduct = () => {
          console.log(error);
       }
       add(item);
-      navigate('/');
+      message.success('Add product successfully');
+      navigate('/admin/products');
    };
    const handleGetFiles = (files: File[]) => {
       form.setFieldValue('images', files);
@@ -78,7 +79,7 @@ const AddProduct = () => {
                <div className='mb-4'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>Discount</label>
                   <input
-                     {...register('discount', { required: true, min: 1 })}
+                     {...register('discount', { required: true, min: 0 })}
                      className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                      type='text'
                      placeholder='Discount'
@@ -114,6 +115,16 @@ const AddProduct = () => {
                         name='images'
                      />
                   </Form.Item>
+               </div>
+               <div className='mb-4'>
+                  <label className='block text-gray-700 text-sm font-bold mb-2'>maxQuantity</label>
+                  <input
+                     {...register('maxQuantity', { required: true, min: 0 })}
+                     className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                     type='text'
+                     placeholder='maxQuantity'
+                  />
+                  {errors.maxQuantity && <span>This field is required</span>}
                </div>
                <div className='mb-6'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>Danh muc</label>
