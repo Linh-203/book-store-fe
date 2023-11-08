@@ -1,41 +1,154 @@
-const FlashSaleCard = (product: any) => {
-   console.log(product.product);
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Link } from 'react-router-dom';
+import styles from './CardProduct.module.css';
+import CartIcon from '../../../../assets/icons/CartIcon';
+import EyeIcon from '../../../../assets/icons/EyeIcon';
+import HeartIcon from '../../../../assets/icons/HeartIcon';
+import Quickview from '../components/Quickview';
+import { IProduct } from '../../../../interfaces/product';
+type Props = {
+   products: IProduct[];
+   link: string;
+};
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { addToWishList } from '../../../../slices/wishListSlice';
+import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+const FlashSaleCard = React.memo(({ products, link }: Props) => {
+   console.log(products);
+   const dispatch = useDispatch();
+   const [toggle, setToggle] = useState<boolean>(false);
+   const add_to_wishList = (product: any) => {
+      dispatch(addToWishList({ ...product, image: product?.image[0]?.url }));
+   };
    return (
-      <div>
-         <div className='w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl'>
-            <a href='#'>
-               <img src={product.product.image[0].url} alt='Product' className='h-80 w-72 object-cover rounded-t-xl' />
-               <div className='px-4 py-3 w-72'>
-                  <span className='text-gray-400 mr-3 uppercase text-xs'>Brand</span>
-                  <p className='text-lg font-bold text-black truncate block capitalize'>{product.product.name}</p>
-                  <div className='flex items-center'>
-                     <p className='text-lg font-semibold text-black cursor-auto my-3'>$149</p>
-                     <del>
-                        <p className='text-sm text-gray-600 cursor-auto ml-2'>$199</p>
-                     </del>
-                     <div className='ml-auto'>
-                        <svg
-                           xmlns='http://www.w3.org/2000/svg'
-                           width='20'
-                           height='20'
-                           fill='currentColor'
-                           className='bi bi-bag-plus'
-                           viewBox='0 0 16 16'
-                        >
-                           <path
-                              fill-rule='evenodd'
-                              d='M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z'
-                           />
-                           <path d='M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z' />
-                        </svg>
+      <div className=' mx-auto px-[15px] 3xl:w-[100%] 2xl:w-[100%] xl:w-[100%] lg:w-[100%]  md:w-[100%]'>
+         <Swiper
+            slidesPerView={4}
+            spaceBetween={30}
+            loop={true}
+            autoplay={{
+               delay: 2000,
+               disableOnInteraction: false
+            }}
+            breakpoints={{
+               1201: {
+                  slidesPerView: 4
+               },
+               1200: {
+                  slidesPerView: 3
+               },
+               767: {
+                  slidesPerView: 3
+               },
+               766: {
+                  slidesPerView: 2
+               },
+               400: {
+                  slidesPerView: 2
+               },
+               1: {
+                  slidesPerView: 1
+               }
+            }}
+            modules={[Autoplay, Navigation, Pagination]}
+            className='mySwiper py-[30px] w-[100%] items-center'
+         >
+            {products?.map((product, index) => (
+               <SwiperSlide key={index}>
+                  {toggle && <Quickview product={product} changeToggle={setToggle} />}
+                  <div className={`${styles['wrapper']}`}>
+                     <Link to={link} className={` block relative text-center`} onClick={() => window.scroll(0, 0)}>
+                        {product?.discount > 0 && (
+                           <p
+                              className={`${styles['tail']} absolute top-5 left-5 w-11 py-3 items-center text-center text-[0.8rem] text-white rounded-full bg-[#00ab9f]`}
+                           >
+                              -{product?.discount}%
+                           </p>
+                        )}
+                        <div className='relative'>
+                           <div className='w-full rounded-lg  sm:h-72 lg:h-96 bg-white flex justify-center items-center'>
+                              <img
+                                 alt='Art'
+                                 src={product?.image[0]?.url}
+                                 className=' w-full object-cover scale-[1] aspect-auto '
+                              />
+                           </div>
+                        </div>
+                        <h3 className='mt-4 text-[1.1rem] font-semibold text-colorText hover:text-[#00ab9f] '>
+                           <Link to={'/productDetail/' + product._id}>{product?.name}</Link>
+                        </h3>
+                        <div className='flex justify-center items-center w-full gap-3 mt-2'>
+                           <p className=' text-greenCus text-[#00ab9f] text-lg font-semibold '>
+                              {product?.discount > 0
+                                 ? (product?.price - (product?.price * product?.discount) / 100).toLocaleString(
+                                      'vi-VN',
+                                      {
+                                         style: 'currency',
+                                         currency: 'VND'
+                                      }
+                                   )
+                                 : product?.price.toLocaleString('vi-VN', {
+                                      style: 'currency',
+                                      currency: 'VND'
+                                   })}
+                           </p>
+                           {product?.discount > 0 && (
+                              <del className='text-grayLight100  font-semibold text-lg '>
+                                 {product?.price.toLocaleString('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                 })}
+                              </del>
+                           )}
+                        </div>
+                     </Link>
+                     <div className={`${styles['mark']}  sm:h-72 lg:h-96`}>
+                        <div className='flex justify-center items-center w-[50%] gap-3 '>
+                           <button
+                              className={`${styles['sub-btn']} p-3 rounded-full bg-greenCus text-white hover:bg-hightLigh duration-200 `}
+                           >
+                              <span
+                                 className={`${styles['tooltip-arrow']} absolute min-w-[100px] bg-colorText py-1 top-[-2.5rem] left-[-2rem] text-[#00ab9f]`}
+                              >
+                                 Add to cart
+                              </span>
+                              <Link to={'/productDetail/' + product._id}>
+                                 <CartIcon className='text-[#00ab9f]' />
+                              </Link>
+                           </button>
+                           <button
+                              className={`${styles['sub-btn']} p-3 rounded-full bg-greenCus text-white hover:bg-hightLigh duration-200`}
+                              onClick={() => setToggle(true)}
+                           >
+                              <span
+                                 className={`${styles['tooltip-arrow']} absolute min-w-[100px] bg-colorText py-1 top-[-2.5rem] left-[-2rem] text-[#00ab9f]`}
+                              >
+                                 Quick view
+                              </span>
+                              <EyeIcon className='text-[#00ab9f]' />
+                           </button>
+                           <button
+                              onClick={() => add_to_wishList(product)}
+                              className={`${styles['sub-btn']} p-3 rounded-full bg-greenCus text-white hover:bg-hightLigh duration-200`}
+                           >
+                              <span
+                                 className={`${styles['tooltip-arrow']} absolute min-w-[100px] bg-colorText py-1 top-[-2.5rem] left-[-2rem] text-[#00ab9f]`}
+                              >
+                                 Wishlist
+                              </span>
+                              <HeartIcon className='text-[#00ab9f]' />
+                           </button>
+                        </div>
                      </div>
                   </div>
-               </div>
-            </a>
-         </div>
+               </SwiperSlide>
+            ))}
+         </Swiper>
       </div>
    );
-};
+});
 
 export default FlashSaleCard;

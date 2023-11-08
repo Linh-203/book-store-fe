@@ -7,7 +7,8 @@ import EyeIcon from '../../../../assets/icons/EyeIcon';
 import HeartIcon from '../../../../assets/icons/HeartIcon';
 import Quickview from '../components/Quickview';
 import { IProduct } from '../../../../interfaces/product';
-
+import { useDispatch } from 'react-redux';
+import { addToWishList } from '../../../../slices/wishListSlice';
 type Props = {
    product: IProduct;
    link: string;
@@ -15,8 +16,11 @@ type Props = {
 
 const Card = React.memo(({ product, link }: Props) => {
    // console.log(product);
-
+   const dispatch = useDispatch();
    const [toggle, setToggle] = useState<boolean>(false);
+   const add_to_wishList = () => {
+      dispatch(addToWishList({ ...product, image: product?.image[0]?.url }));
+   };
    return (
       <>
          {toggle && <Quickview product={product} changeToggle={setToggle} />}
@@ -89,6 +93,7 @@ const Card = React.memo(({ product, link }: Props) => {
                      <EyeIcon className='text-[#00ab9f]' />
                   </button>
                   <button
+                     onClick={add_to_wishList}
                      className={`${styles['sub-btn']} p-3 rounded-full bg-greenCus text-white hover:bg-hightLigh duration-200`}
                   >
                      <span

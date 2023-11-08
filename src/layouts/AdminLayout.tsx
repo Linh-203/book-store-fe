@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
    PieChartOutlined,
-   NotificationOutlined,
+   // NotificationOutlined,
    UserOutlined,
    MenuFoldOutlined,
    MenuUnfoldOutlined
@@ -12,8 +12,8 @@ import { Outlet } from 'react-router';
 import { logoUrl } from '../constants/imageUrl';
 import ProductIcon from '../components/Icons/ProductIcon';
 import { Link } from 'react-router-dom';
-import TicketIcon from '../components/Icons/TicketIcon';
-import OrderIcon from '../components/Icons/OrderIcon';
+// import TicketIcon from '../components/Icons/TicketIcon';
+// import OrderIcon from '../components/Icons/OrderIcon';
 import HeaderAdmin from '../components/layout/Header/HeaderAdmin';
 
 const { Content, Sider } = Layout;
@@ -35,10 +35,10 @@ const items: MenuItem[] = [
       getItem(<Link to='/admin/products'>Sản phẩm</Link>, '3'),
       getItem(<Link to='/admin/categories'>Danh mục</Link>, '4')
    ]),
-   getItem(<Link to='/admin'>Đơn hàng</Link>, 'sub1', <OrderIcon />),
-   getItem(<Link to='/admin'>Mã khuyễn mãi</Link>, 'sub2', <TicketIcon />),
-   getItem(<Link to='/admin/user'>Tài khoản</Link>, 'sub3', <UserOutlined />),
-   getItem(<Link to='/admin'>Thông báo người dùng</Link>, 'sub4', <NotificationOutlined />)
+   getItem(<Link to='/admin/user'>Tài khoản</Link>, 'sub3', <UserOutlined />)
+   // getItem(<Link to='/admin'>Đơn hàng</Link>, 'sub1', <OrderIcon />),
+   // getItem(<Link to='/admin'>Mã khuyễn mãi</Link>, 'sub2', <TicketIcon />),
+   // getItem(<Link to='/admin'>Thông báo người dùng</Link>, 'sub4', <NotificationOutlined />)
 ];
 
 const AdminLayout = () => {

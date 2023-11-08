@@ -1,14 +1,15 @@
-import { Col, Image, Row, Spin, message } from 'antd';
-import { StarFilled } from '@ant-design/icons';
+import { Image, Spin, message } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useGetProductByIdQuery } from '../../../services/product.service';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../../slices/cartSlice';
 import { useState } from 'react';
+import { addToWishList } from '../../../slices/wishListSlice';
 const DetailProduct = () => {
    const [inputQuantity, setinputQuantity] = useState<any>(1);
    const { id } = useParams();
    const { data, isLoading } = useGetProductByIdQuery(id);
+   // console.log(data);
    const handleinputQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (/^[\d.]+$/.test(e.target.value)) {
          const value = e.target.value;
@@ -36,8 +37,10 @@ const DetailProduct = () => {
             _id: data?.product?._id,
             name: data?.product?.name,
             image: data?.product?.image[0].url,
-            price: data?.product?.price,
-            discount: data?.product?.discount,
+            price:
+               data?.product?.discount > 0
+                  ? data?.product?.price - (data?.product?.price * data?.product?.discount) / 100
+                  : data?.product?.price,
             quantity: inputQuantity,
             maxQuantity: data?.product?.maxQuantity
          };
@@ -55,381 +58,308 @@ const DetailProduct = () => {
          setinputQuantity(inputQuantity - 1);
       }
    };
+   const add_to_wishList = () => {
+      const product = {
+         _id: data?.product?._id,
+         name: data?.product?.name,
+         image: data?.product?.image[0].url,
+         price: data?.product?.price
+      };
+      dispatch(addToWishList(product));
+   };
+   const isAdded = useSelector((state: any) =>
+      state?.wishList?.items?.find((item: any) => item?._id === data?.product?._id)
+   );
    return (
       <div>
          {isLoading && !data ? (
             <Spin />
          ) : (
             <div>
-               <Row className='pt-10 pl-20 bg-white'>
-                  <Col span={10} className=''>
-                     <Image src={data.product.image[0].url} alt='productImage' preview={true} />
-                     <div>
-                        <Row style={{ marginRight: '85px', paddingTop: '10px' }}>
-                           <Col span={7}>
-                              <Image src={data.product.image[0]?.url} alt='product Image small' preview={true} />
-                           </Col>
-                           <Col span={7}>
-                              <Image src={data.product.image[0]?.url} alt='product Image small' preview={true} />
-                           </Col>
-                           <Col span={7}>
-                              <Image src={data.product.image[0]?.url} alt='product Image small' preview={true} />
-                           </Col>
-                        </Row>
-                     </div>
-                  </Col>
-                  <Col span={14}>
-                     <div style={{ display: 'inline-block' }}>
-                        <h3 className='text-[30px] font-bold'>{data.product.name}</h3>
-                        <span className='text-[25px] font-bold text-[#00ab9f]'>
-                           {data.product?.discount > 0
-                              ? (
-                                   data.product?.price -
-                                   (data.product?.price * data.product?.discount) / 100
-                                ).toLocaleString('vi-VN', {
-                                   style: 'currency',
-                                   currency: 'VND'
-                                })
-                              : data.product?.price}
-                        </span>
-                        <span className='line-through text-gray-500 text-[16px] pl-2'>
-                           {data.product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-                        </span>
-                     </div>
-                     <div className='pb-5'>
-                        <StarFilled
-                           style={{
-                              fontSize: '17px',
-                              color: '#ffc107',
-                              alignItems: 'center',
-                              paddingTop: '20px'
-                           }}
-                        />
-
-                        <StarFilled
-                           style={{
-                              fontSize: '17px',
-                              color: '#ffc107',
-                              alignItems: 'center'
-                           }}
-                        />
-                        <StarFilled
-                           style={{
-                              fontSize: '17px',
-                              color: '#ffc107',
-                              alignItems: 'center',
-                              paddingTop: '20px'
-                           }}
-                        />
-                        <StarFilled
-                           style={{
-                              fontSize: '17px',
-                              color: '#ffc107',
-                              alignItems: 'center',
-                              paddingTop: '20px'
-                           }}
-                        />
-                        <StarFilled
-                           style={{
-                              fontSize: '17px',
-                              color: '#ffc107',
-                              alignItems: 'center',
-                              paddingTop: '20px'
-                           }}
-                        />
-                     </div>
-                     <hr className='pb-5' />
-                     <p className='w-[550px] text-[18px] pb-7'>{data.product.desc}</p>
-                     <div>
-                        <span className='font-bold text-[16px]'>
-                           Tác Giả
-                           <span className='pl-1 text-[#00ab9f] text-[14px]'>{data.product.author}</span>
-                        </span>
-                     </div>
-                     <div className=' py-3'>
-                        <span className='font-bold text-[16px]'>
-                           Availablity:
-                           <span className='pl-1 text-[#00ab9f] text-[14px] '>In Stock</span>
-                        </span>
-                     </div>
-                     <div className='pb-5'>
-                        <span className='font-bold text-[16px]'>
-                           Tags:
-                           <span className=' text-[#00ab9f] text-[14px] pl-2 underline'>
-                              {' '}
-                              {data.product.categoryId.cateName}
-                           </span>
-                        </span>
-                     </div>
-                     <div className='pb-5'>
-                        <span className='font-bold text-[16px]'>
-                           Số lượng hiện có:
-                           <span className=' text-[#00ab9f] text-[14px] pl-2 '> {data.product.maxQuantity}</span>
-                        </span>
-                     </div>
-                     <hr />
-                     <div className='product-info md:mt-[30px] max-md:mt-[20px] flex items-center'>
-                        <div className='stock-qty-title text-[20px] text-[#333333] font-bold'>Số lượng:</div>
-
-                        <div className='stock-qty-value text-[16px] ml-[15px] text-[#198754] font-bold'>
-                           <div className='product-quantity-action flex lg:justify-center'>
-                              <div className='product-quantity flex  '>
-                                 <input
-                                    type='text'
-                                    value={inputQuantity}
-                                    onChange={handleinputQuantity}
-                                    className='input-quantity text-center text-[#6f6f6f] w-[calc(100%-25px)] outline-none border-[#e2e2e2] max-w-[50px] h-[50px]  border-[1px] rounded-[5px]'
+               <section className='py-10 font-poppins dark:bg-gray-800'>
+                  <div className='max-w-6xl px-4 mx-auto'>
+                     <div className='flex flex-wrap mb-24 -mx-4'>
+                        <div className='w-full px-4 mb-8 md:w-1/2 md:mb-0'>
+                           <div className='sticky top-0 overflow-hidden '>
+                              <div className='relative mb-6 lg:mb-10 lg:h-96'>
+                                 <a className='absolute left-0 transform lg:ml-2 top-1/2 translate-1/2' href='#'>
+                                    <svg
+                                       xmlns='http://www.w3.org/2000/svg'
+                                       width='16'
+                                       height='16'
+                                       fill='currentColor'
+                                       className='w-5 h-5 text-blue-500 bi bi-chevron-left dark:text-blue-200'
+                                       viewBox='0 0 16 16'
+                                    >
+                                       <path
+                                          fill-rule='evenodd'
+                                          d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'
+                                       ></path>
+                                    </svg>
+                                 </a>
+                                 <img
+                                    className='object-contain w-full lg:h-full'
+                                    src={data.product.image[0]?.url}
+                                    alt=''
                                  />
-                                 <div className='flex flex-col'>
-                                    <button
-                                       disabled={data?.product?.maxQuantity >= 0}
-                                       onClick={dec}
-                                       type='button'
-                                       className='inc qty-btn text-[15px] text-[#232323] flex items-center justify-center cursor-pointer border-[1px] border-[#e2e2e2] rounded-[5px] w-[25px] h-[25px]'
+                                 <a className='absolute right-0 transform lg:mr-2 top-1/2 translate-1/2' href='#'>
+                                    <svg
+                                       xmlns='http://www.w3.org/2000/svg'
+                                       width='16'
+                                       height='16'
+                                       fill='currentColor'
+                                       className='w-5 h-5 text-blue-500 bi bi-chevron-right dark:text-blue-200'
+                                       viewBox='0 0 16 16'
                                     >
-                                       +
-                                    </button>
-                                    <button
-                                       disabled={data?.product?.maxQuantity <= 0}
-                                       onClick={inc}
-                                       type='button'
-                                       className='inc qty-btn text-[15px] text-[#232323] flex items-center justify-center cursor-pointer border-[1px] border-[#e2e2e2] rounded-[5px] w-[25px] h-[25px]'
+                                       <path
+                                          fill-rule='evenodd'
+                                          d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'
+                                       ></path>
+                                    </svg>
+                                 </a>
+                              </div>
+                              <div className='flex-wrap hidden -mx-2 md:flex'>
+                                 <div className='w-1/2 p-2 sm:w-1/4'>
+                                    <a
+                                       className='block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300'
+                                       href='#'
                                     >
-                                       -
-                                    </button>
+                                       <Image
+                                          preview={true}
+                                          className='object-contain w-full lg:h-28'
+                                          src={data.product.image[1]?.url}
+                                          alt=''
+                                       />
+                                    </a>
+                                 </div>
+                                 <div className='w-1/2 p-2 sm:w-1/4'>
+                                    <a
+                                       className='block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300'
+                                       href='#'
+                                    >
+                                       <Image
+                                          preview={true}
+                                          className='object-contain w-full lg:h-28'
+                                          src={data.product.image[2]?.url}
+                                          alt=''
+                                       />
+                                    </a>
+                                 </div>
+                                 <div className='w-1/2 p-2 sm:w-1/4'>
+                                    <a
+                                       className='block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300'
+                                       href='#'
+                                    >
+                                       <Image
+                                          preview={true}
+                                          className='object-contain w-full lg:h-28'
+                                          src={data.product.image[1]?.url}
+                                          alt=''
+                                       />
+                                    </a>
+                                 </div>
+                                 <div className='w-1/2 p-2 sm:w-1/4'>
+                                    <a
+                                       className='block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300'
+                                       href='#'
+                                    >
+                                       <img
+                                          className='object-contain w-full lg:h-28'
+                                          src={data.product.image[2]?.url}
+                                          alt=''
+                                       />
+                                    </a>
                                  </div>
                               </div>
                            </div>
                         </div>
-                     </div>
-                     <div className='btn-add-card-wrap group/btn-add-cart max-sm:w-full'>
-                        <button
-                           type='button'
-                           onClick={add_to_cart}
-                           className='btn-add-cart py-[12px] text-[#333333] w-[200px] transition-colors duration-300 z-[3] before:z-[-1] px-[30px] text-center rounded-[5px] group-hover/btn-add-cart:text-white font-bold bg-[#333333] border-[2px] border-[#333333] before-content-[""] before:absolute relative before:w-full before:h-full overflow-hidden before:bg-white before:transition-all before:duration-300 before:group-hover/btn-add-cart:scale-y-[0] before:origin-right   before:right-0 before:left-[0px] before:top-0'
-                           disabled={data?.product?.maxQuantity <= 0}
-                        >
-                           {data?.product?.maxQuantity > 0 ? 'THÊM VÀO GIỎ HÀNG' : 'HẾT HÀNG'}
-                        </button>
-                     </div>
-                  </Col>
-                  <section className='bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased w-full'>
-                     <div className='max-w-2xl mx-auto px-4'>
-                        <div className='flex justify-between items-center mb-6'>
-                           <h2 className='text-lg lg:text-2xl font-bold text-gray-900 dark:text-white'>
-                              Discussion (20)
-                           </h2>
+                        <div className='w-full px-4 md:w-1/2'>
+                           <div className='lg:pl-20'>
+                              <div className='mb-6 '>
+                                 <span className='px-2.5 py-0.5 text-xs text-blue-600 bg-blue-100 dark:bg-gray-700 rounded-xl dark:text-gray-200'>
+                                    In Stock
+                                 </span>
+                                 <h2 className='max-w-xl mt-6 mb-6 text-xl font-semibold leading-loose tracking-wide text-gray-700 md:text-2xl dark:text-gray-300'>
+                                    {data.product.name}
+                                 </h2>
+                                 <div className='flex flex-wrap items-center mb-6'>
+                                    <ul className='flex mb-4 mr-2 lg:mb-0'>
+                                       <li>
+                                          <a href='#'>
+                                             <svg
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                width='16'
+                                                height='16'
+                                                fill='currentColor'
+                                                className='w-4 mr-1 text-red-500 dark:text-gray-400 bi bi-star '
+                                                viewBox='0 0 16 16'
+                                             >
+                                                <path d='M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z'></path>
+                                             </svg>
+                                          </a>
+                                       </li>
+                                       <li>
+                                          <a href='#'>
+                                             <svg
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                width='16'
+                                                height='16'
+                                                fill='currentColor'
+                                                className='w-4 mr-1 text-red-500 dark:text-gray-400 bi bi-star '
+                                                viewBox='0 0 16 16'
+                                             >
+                                                <path d='M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z'></path>
+                                             </svg>
+                                          </a>
+                                       </li>
+                                       <li>
+                                          <a href='#'>
+                                             <svg
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                width='16'
+                                                height='16'
+                                                fill='currentColor'
+                                                className='w-4 mr-1 text-red-500 dark:text-gray-400 bi bi-star '
+                                                viewBox='0 0 16 16'
+                                             >
+                                                <path d='M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z'></path>
+                                             </svg>
+                                          </a>
+                                       </li>
+                                       <li>
+                                          <a href='#'>
+                                             <svg
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                width='16'
+                                                height='16'
+                                                fill='currentColor'
+                                                className='w-4 mr-1 text-red-500 dark:text-gray-400 bi bi-star '
+                                                viewBox='0 0 16 16'
+                                             >
+                                                <path d='M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z'></path>
+                                             </svg>
+                                          </a>
+                                       </li>
+                                    </ul>
+                                    {/* <a
+                                       className='mb-4 text-xs underline hover:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300 lg:mb-0'
+                                       href='#'
+                                    >
+                                       View the acer store
+                                    </a> */}
+                                 </div>
+                                 <p className='inline-block text-2xl font-semibold text-gray-700 dark:text-gray-400 '>
+                                    <span>
+                                       {data.product.price.toLocaleString('vi-VN', {
+                                          style: 'currency',
+                                          currency: 'VND'
+                                       })}
+                                    </span>
+                                    <span className='ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400'>
+                                       {data.product?.discount > 0
+                                          ? (
+                                               data.product?.price -
+                                               (data.product?.price * data.product?.discount) / 100
+                                            ).toLocaleString('vi-VN', {
+                                               style: 'currency',
+                                               currency: 'VND'
+                                            })
+                                          : ''}
+                                    </span>
+                                 </p>
+                              </div>
+
+                              <div className='py-6 mb-6 border-t border-b border-gray-200 dark:border-gray-700'>
+                                 <span className='text-base text-blue-500 dark:text-gray-400'>
+                                    Sản phẩm còn lại: {data.product?.maxQuantity}
+                                 </span>
+                                 <p className='mt-2 text-sm text-blue-500 dark:text-blue-200'>
+                                    <span className='text-gray-600 dark:text-gray-400'>{data.product.desc}</span>
+                                 </p>
+                              </div>
+                              <div className='mb-6 '></div>
+                              <div className='flex flex-wrap items-center mb-6'>
+                                 <div className='mb-4 mr-4 lg:mb-0'>
+                                    <div className='w-28'>
+                                       <div className='relative flex flex-row w-full h-10 bg-transparent rounded-lg'>
+                                          <button
+                                             disabled={data?.product?.maxQuantity <= 0}
+                                             onClick={inc}
+                                             type='button'
+                                             className='w-20 h-full text-gray-600 bg-gray-100 border-r rounded-l outline-none cursor-pointer dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-400 hover:text-gray-700 dark:bg-gray-900 hover:bg-gray-300'
+                                          >
+                                             <span className='m-auto text-2xl font-thin'>-</span>
+                                          </button>
+                                          <input
+                                             type='text'
+                                             value={inputQuantity}
+                                             onChange={handleinputQuantity}
+                                             className='flex items-center w-full font-semibold text-center text-gray-700 placeholder-gray-700 bg-gray-100 outline-none dark:text-gray-400 dark:placeholder-gray-400 dark:bg-gray-900 focus:outline-none text-md hover:text-black'
+                                          />
+                                          <button
+                                             disabled={inputQuantity >= data?.product?.maxQuantity}
+                                             onClick={dec}
+                                             type='button'
+                                             className='w-20 h-full text-gray-600 bg-gray-100 border-l rounded-r outline-none cursor-pointer dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-400 dark:bg-gray-900 hover:text-gray-700 hover:bg-gray-300'
+                                          >
+                                             <span className='m-auto text-2xl font-thin'>+</span>
+                                          </button>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div className='mb-4 lg:mb-0'>
+                                    <button
+                                       type='button'
+                                       onClick={add_to_wishList}
+                                       className='flex items-center justify-center w-full h-10 p-2 mr-4 text-gray-700 border border-gray-300 lg:w-11 hover:text-gray-50 dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 dark:hover:border-blue-500 dark:hover:text-gray-100'
+                                    >
+                                       {isAdded ? (
+                                          <svg
+                                             color='red'
+                                             xmlns='http://www.w3.org/2000/svg'
+                                             width='16'
+                                             height='16'
+                                             fill='currentColor'
+                                             className=' bi bi-heart'
+                                             viewBox='0 0 16 16'
+                                          >
+                                             <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z'></path>
+                                          </svg>
+                                       ) : (
+                                          <svg
+                                             xmlns='http://www.w3.org/2000/svg'
+                                             width='16'
+                                             height='16'
+                                             fill='currentColor'
+                                             className=' bi bi-heart'
+                                             viewBox='0 0 16 16'
+                                          >
+                                             <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z'></path>
+                                          </svg>
+                                       )}
+                                    </button>
+                                 </div>
+                                 <button
+                                    type='button'
+                                    onClick={add_to_cart}
+                                    className='w-full px-4 py-3 text-center text-blue-600 bg-blue-100 border border-blue-600 dark:hover:bg-gray-900 dark:text-gray-400 dark:border-gray-700 dark:bg-gray-700 hover:bg-blue-600 hover:text-gray-100 lg:w-1/2 rounded-xl'
+                                 >
+                                    Add to cart
+                                 </button>
+                              </div>
+                              <div className='flex gap-4 mb-6'>
+                                 <a
+                                    href='/cart'
+                                    className='w-full px-4 py-3 text-center text-gray-100 bg-blue-600 border border-transparent dark:border-gray-700 hover:border-blue-500 hover:text-blue-700 hover:bg-blue-100 dark:text-gray-400 dark:bg-gray-700 dark:hover:bg-gray-900 rounded-xl'
+                                 >
+                                    Buy now
+                                 </a>
+                              </div>
+                           </div>
                         </div>
-                        <form className='mb-6'>
-                           <div className='py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
-                              <label className='sr-only'>Your comment</label>
-                              <textarea
-                                 id='comment'
-                                 className='px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
-                                 placeholder='Write a comment...'
-                                 required
-                              ></textarea>
-                           </div>
-                           <button
-                              // type='submit'
-                              className='inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 bg-blue-500'
-                           >
-                              Post comment
-                           </button>
-                        </form>
-                        <article className='p-6 text-base bg-white rounded-lg dark:bg-gray-900'>
-                           <footer className='flex justify-between items-center mb-2'>
-                              <div className='flex items-center'>
-                                 <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold'>
-                                    <img
-                                       className='mr-2 w-6 h-6 rounded-full'
-                                       src='https://flowbite.com/docs/images/people/profile-picture-2.jpg'
-                                       alt='Michael Gough'
-                                    />
-                                    Michael Gough
-                                 </p>
-                                 <p className='text-sm text-gray-600 dark:text-gray-400'>
-                                    <time title='February 8th, 2022'>Feb. 8, 2022</time>
-                                 </p>
-                              </div>
-                              <button
-                                 id='dropdownComment1Button'
-                                 data-dropdown-toggle='dropdownComment1'
-                                 className='inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
-                                 type='button'
-                              >
-                                 <svg
-                                    className='w-4 h-4'
-                                    aria-hidden='true'
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    fill='currentColor'
-                                    viewBox='0 0 16 3'
-                                 >
-                                    <path d='M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z' />
-                                 </svg>
-                                 <span className='sr-only'>Comment settings</span>
-                              </button>
-                              {/* <!-- Dropdown menu --> */}
-                              <div
-                                 id='dropdownComment1'
-                                 className='hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600'
-                              >
-                                 <ul
-                                    className='py-1 text-sm text-gray-700 dark:text-gray-200'
-                                    aria-labelledby='dropdownMenuIconHorizontalButton'
-                                 >
-                                    <li>
-                                       <a
-                                          href='#'
-                                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                                       >
-                                          Edit
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a
-                                          href='#'
-                                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                                       >
-                                          Remove
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a
-                                          href='#'
-                                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                                       >
-                                          Report
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                           </footer>
-                           <p className='text-gray-500 dark:text-gray-400'>
-                              Very straight-to-point article. Really worth time reading. Thank you! But tools are just
-                              the instruments for the UX designers. The knowledge of the design tools are as important
-                              as the creation of the design strategy.
-                           </p>
-                           <div className='flex items-center mt-4 space-x-4'>
-                              <button
-                                 type='button'
-                                 className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium'
-                              >
-                                 <svg
-                                    className='mr-1.5 w-3.5 h-3.5'
-                                    aria-hidden='true'
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    fill='none'
-                                    viewBox='0 0 20 18'
-                                 >
-                                    <path
-                                       stroke='currentColor'
-                                       stroke-linecap='round'
-                                       stroke-linejoin='round'
-                                       stroke-width='2'
-                                       d='M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z'
-                                    />
-                                 </svg>
-                                 Reply
-                              </button>
-                           </div>
-                        </article>
-                        <article className='p-6 mb-3 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900'>
-                           <footer className='flex justify-between items-center mb-2'>
-                              <div className='flex items-center'>
-                                 <p className='inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold'>
-                                    <img
-                                       className='mr-2 w-6 h-6 rounded-full'
-                                       src='https://flowbite.com/docs/images/people/profile-picture-5.jpg'
-                                       alt='Jese Leos'
-                                    />
-                                    Jese Leos
-                                 </p>
-                                 <p className='text-sm text-gray-600 dark:text-gray-400'>
-                                    <time title='February 12th, 2022'>Feb. 12, 2022</time>
-                                 </p>
-                              </div>
-                              <button
-                                 id='dropdownComment2Button'
-                                 data-dropdown-toggle='dropdownComment2'
-                                 className='inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-40 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
-                                 type='button'
-                              >
-                                 <svg
-                                    className='w-4 h-4'
-                                    aria-hidden='true'
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    fill='currentColor'
-                                    viewBox='0 0 16 3'
-                                 >
-                                    <path d='M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z' />
-                                 </svg>
-                                 <span className='sr-only'>Comment settings</span>
-                              </button>
-                              {/* <!-- Dropdown menu --> */}
-                              <div
-                                 id='dropdownComment2'
-                                 className='hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600'
-                              >
-                                 <ul
-                                    className='py-1 text-sm text-gray-700 dark:text-gray-200'
-                                    aria-labelledby='dropdownMenuIconHorizontalButton'
-                                 >
-                                    <li>
-                                       <a
-                                          href='#'
-                                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                                       >
-                                          Edit
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a
-                                          href='#'
-                                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                                       >
-                                          Remove
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a
-                                          href='#'
-                                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                                       >
-                                          Report
-                                       </a>
-                                    </li>
-                                 </ul>
-                              </div>
-                           </footer>
-                           <p className='text-gray-500 dark:text-gray-400'>Much appreciated! Glad you liked it ☺️</p>
-                           <div className='flex items-center mt-4 space-x-4'>
-                              <button
-                                 type='button'
-                                 className='flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium'
-                              >
-                                 <svg
-                                    className='mr-1.5 w-3.5 h-3.5'
-                                    aria-hidden='true'
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    fill='none'
-                                    viewBox='0 0 20 18'
-                                 >
-                                    <path
-                                       stroke='currentColor'
-                                       stroke-linecap='round'
-                                       stroke-linejoin='round'
-                                       stroke-width='2'
-                                       d='M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z'
-                                    />
-                                 </svg>
-                                 Reply
-                              </button>
-                           </div>
-                        </article>
                      </div>
-                  </section>
-               </Row>
+                  </div>
+               </section>
             </div>
          )}
       </div>

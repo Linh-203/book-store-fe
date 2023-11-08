@@ -36,32 +36,35 @@ const cartSlice = createSlice({
             0
          );
       },
+      // value.price = value?.discount > 0 ? value?.price - (value?.price * value?.discount) / 100 : value?.price;
       addItem: (state, action) => {
          const value = action.payload;
-         console.log(value);
-
          let isItemExist = false;
          let error = false;
-         const items = state.items.map((item: any) => {
+         if (value.quantity > value.maxQuantity) {
+            message.error('Số lượng đã quá số lượng hiện có');
+            error = true;
+         }
+         const products = state.items.map((item: any) => {
             if (item?._id === value._id) {
                isItemExist = true;
                if (item.quantity + value.quantity <= value.maxQuantity) {
                   item.quantity += value.quantity;
                } else {
-                  message.error('Số lượng đã vượt quá số lượng hiện có');
+                  message.error('Số lượng đã quá số lượng hiện có');
                   error = true;
                }
             }
             return item;
          });
          if (isItemExist && !error) {
-            state.totalPrice += items.reduce(
+            state.totalPrice = products.reduce(
                (accumulator: any, product: any) => accumulator + product.price * product.quantity,
                0
             );
 
-            localStorage.setItem(state.cartName, JSON.stringify([...items]));
-            state.items = items;
+            localStorage.setItem(state.cartName, JSON.stringify([...products]));
+            state.items = products;
             message.success('thêm sản phẩm vào giỏ hàng thành công');
          } else if (!isItemExist && !error) {
             state.totalPrice = [...state.items, value].reduce(
@@ -73,12 +76,12 @@ const cartSlice = createSlice({
             message.success('thêm sản phẩm vào giỏ hàng thành công');
          }
       },
+
       removeFromCart: (state, action) => {
          const nextCartItems = state.items.filter((cartItem: any) => cartItem._id !== action.payload.id);
-         state.totalPrice = nextCartItems.reduce(
-            (accumulator, product) => accumulator + product.price * product.quantity,
-            0
-         );
+         state.totalPrice = nextCartItems.reduce((accumulator, product) => {
+            return accumulator + product.price * product.quantity;
+         }, 0);
          state.items = nextCartItems;
          message.success('Xóa sản phẩm khỏi giỏ hàng thành công');
          localStorage.setItem(state.cartName, JSON.stringify(state.items));
@@ -91,7 +94,6 @@ const cartSlice = createSlice({
       },
       updateItem: (state, action) => {
          console.log(action.payload);
-
          const nextCartItems = state.items.map((cartItem: any) => {
             if (cartItem._id === action.payload.id) {
                if (action.payload.quantity >= 0) {
@@ -104,10 +106,9 @@ const cartSlice = createSlice({
             return cartItem;
          });
          localStorage.setItem(state.cartName, JSON.stringify(nextCartItems));
-         state.totalPrice = nextCartItems.reduce(
-            (accumulator, product) => accumulator + product.price * product.quantity,
-            0
-         );
+         state.totalPrice = nextCartItems.reduce((accumulator, product) => {
+            return accumulator + product.price * product.quantity;
+         }, 0);
          state.items = nextCartItems;
          message.success('Cập nhật sản phẩm thành công');
       }

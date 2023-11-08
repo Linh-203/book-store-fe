@@ -46,7 +46,7 @@ const SearchFilter = ({ children }: any) => {
          search('');
       } else {
          const newSearchHistory = [searchValue, ...searchHistory];
-         const histories = newSearchHistory.filter((item, index) => index < 5);
+         const histories = newSearchHistory.filter((_, index) => index < 5);
          setSearchHistory(histories);
          search(`${searchValue}`);
       }

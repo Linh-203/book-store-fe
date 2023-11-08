@@ -54,7 +54,7 @@ export default function SlideCateHomePage() {
                            />
                         </span>
                         <div className='cate-content text-left'>
-                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Cam Trung Quốc</p>
+                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Tâm Linh-Luân Hồi</p>
                            <p className='cate-count text-[#333333] pt-[5px] text-[16px] group-hover:text-[#51A55C] transition-colors duration-300'>
                               20 sản phẩm
                            </p>
@@ -68,12 +68,12 @@ export default function SlideCateHomePage() {
                         <span className='cate-icon rounded-[50%] bg-[#F8F8F8] mr-[30px] h-[80px] w-[80px] block'>
                            <img
                               className='h-[80px] w-[80px]'
-                              src='https://khothietke.net/wp-content/uploads/2021/04/PNGKhovector.net-02049d7b9f985c6412588.png'
+                              src='https://cdn0.fahasa.com/media/wysiwyg/Duy-VHDT/Danh-muc-san-pham/_am_m_.jpg'
                               alt=''
                            />
                         </span>
                         <div className='cate-content text-left'>
-                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Cam Trung Quốc</p>
+                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Ngôn Tình-Đam Mỹ</p>
                            <p className='cate-count text-[#333333] pt-[5px] text-[16px] group-hover:text-[#51A55C] transition-colors duration-300'>
                               20 sản phẩm
                            </p>
@@ -87,12 +87,12 @@ export default function SlideCateHomePage() {
                         <span className='cate-icon rounded-[50%] bg-[#F8F8F8] mr-[30px] h-[80px] w-[80px] block'>
                            <img
                               className='h-[80px] w-[80px]'
-                              src='https://khothietke.net/wp-content/uploads/2021/04/PNGKhovector.net-02049d7b9f985c6412588.png'
+                              src='https://cdn0.fahasa.com/media/wysiwyg/Duy-VHDT/9786043654370.jpg'
                               alt=''
                            />
                         </span>
                         <div className='cate-content text-left'>
-                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Cam Trung Quốc</p>
+                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Xu Hướng-Kinh Tế</p>
                            <p className='cate-count text-[#333333] pt-[5px] text-[16px] group-hover:text-[#51A55C] transition-colors duration-300'>
                               20 sản phẩm
                            </p>
@@ -106,12 +106,12 @@ export default function SlideCateHomePage() {
                         <span className='cate-icon rounded-[50%] bg-[#F8F8F8] mr-[30px] h-[80px] w-[80px] block'>
                            <img
                               className='h-[80px] w-[80px]'
-                              src='https://khothietke.net/wp-content/uploads/2021/04/PNGKhovector.net-02049d7b9f985c6412588.png'
+                              src='https://cdn0.fahasa.com/media/wysiwyg/Duy-VHDT/Danh-muc-san-pham/Thao_t_ng.jpg'
                               alt=''
                            />
                         </span>
                         <div className='cate-content text-left'>
-                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Cam Trung Quốc</p>
+                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Tâm Lý-Thao Túng</p>
                            <p className='cate-count text-[#333333] pt-[5px] text-[16px] group-hover:text-[#51A55C] transition-colors duration-300'>
                               20 sản phẩm
                            </p>
@@ -125,12 +125,12 @@ export default function SlideCateHomePage() {
                         <span className='cate-icon rounded-[50%] bg-[#F8F8F8] mr-[30px] h-[80px] w-[80px] block'>
                            <img
                               className='h-[80px] w-[80px]'
-                              src='https://khothietke.net/wp-content/uploads/2021/04/PNGKhovector.net-02049d7b9f985c6412588.png'
+                              src='https://cdn0.fahasa.com/media/wysiwyg/Duy-VHDT/thieunhis2.jpg'
                               alt=''
                            />
                         </span>
                         <div className='cate-content text-left'>
-                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Cam Trung Quốc</p>
+                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Thiếu Nhi</p>
                            <p className='cate-count text-[#333333] pt-[5px] text-[16px] group-hover:text-[#51A55C] transition-colors duration-300'>
                               20 sản phẩm
                            </p>
@@ -144,12 +144,12 @@ export default function SlideCateHomePage() {
                         <span className='cate-icon rounded-[50%] bg-[#F8F8F8] mr-[30px] h-[80px] w-[80px] block'>
                            <img
                               className='h-[80px] w-[80px]'
-                              src='https://khothietke.net/wp-content/uploads/2021/04/PNGKhovector.net-02049d7b9f985c6412588.png'
+                              src='https://cdn0.fahasa.com/media/wysiwyg/Duy-VHDT/tpkds1.jpg'
                               alt=''
                            />
                         </span>
                         <div className='cate-content text-left'>
-                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Cam Trung Quốc</p>
+                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Văn Học-Kinh Điển</p>
                            <p className='cate-count text-[#333333] pt-[5px] text-[16px] group-hover:text-[#51A55C] transition-colors duration-300'>
                               20 sản phẩm
                            </p>
@@ -163,31 +163,12 @@ export default function SlideCateHomePage() {
                         <span className='cate-icon rounded-[50%] bg-[#F8F8F8] mr-[30px] h-[80px] w-[80px] block'>
                            <img
                               className='h-[80px] w-[80px]'
-                              src='https://khothietke.net/wp-content/uploads/2021/04/PNGKhovector.net-02049d7b9f985c6412588.png'
+                              src='https://cdn0.fahasa.com/media/wysiwyg/Duy-VHDT/Danh-muc-san-pham/Ti_u_Thuy_t.jpg'
                               alt=''
                            />
                         </span>
                         <div className='cate-content text-left'>
-                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Cam Trung Quốc</p>
-                           <p className='cate-count text-[#333333] pt-[5px] text-[16px] group-hover:text-[#51A55C] transition-colors duration-300'>
-                              20 sản phẩm
-                           </p>
-                        </div>
-                     </a>
-                  </div>
-               </SwiperSlide>
-               <SwiperSlide>
-                  <div className='cate-wrap group'>
-                     <a href='#' className='cate-item flex items-center'>
-                        <span className='cate-icon rounded-[50%] bg-[#F8F8F8] mr-[30px] h-[80px] w-[80px] block'>
-                           <img
-                              className='h-[80px] w-[80px]'
-                              src='https://khothietke.net/wp-content/uploads/2021/04/PNGKhovector.net-02049d7b9f985c6412588.png'
-                              alt=''
-                           />
-                        </span>
-                        <div className='cate-content text-left'>
-                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Cam Trung Quốc</p>
+                           <p className='cate-title font-bold text-[#51A55C] text-[16px]'>Tiểu Thuyết</p>
                            <p className='cate-count text-[#333333] pt-[5px] text-[16px] group-hover:text-[#51A55C] transition-colors duration-300'>
                               20 sản phẩm
                            </p>

@@ -9,6 +9,7 @@ import SubBanner from './components/SubBanner';
 import ThuongHieu from './components/ThuongHieu';
 import { useGetAllProductsQuery } from '../../../services/product.service';
 import SlideCateHomePage from './components/SlideCategoriesHomePage';
+import FlashSaleCard from './components/FlashSaleCard';
 // import FlashSaleCard from './components/FlashSaleCard';
 const HomePage = () => {
    const { data, isLoading } = useGetAllProductsQuery();
@@ -37,9 +38,9 @@ const HomePage = () => {
          <div className='text-center p-5'>
             <h1 className='font-bold text-4xl mt-4 text-red-500'>Flash Sale</h1>
          </div>
-         <section className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-2 mb-5'>
+         <section className='w-full mx-auto mt-2 mb-5'>
             {discountedProducts && discountedProducts?.length > 0 ? (
-               discountedProducts.map((prd, index) => <Card key={index} product={prd} link='/' />)
+               <FlashSaleCard products={discountedProducts} link='/' />
             ) : (
                <></>
             )}

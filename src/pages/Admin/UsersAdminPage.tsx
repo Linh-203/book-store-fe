@@ -5,23 +5,26 @@ const UsersAdminPage = () => {
    // console.log(data);
    const [remove] = useRemoveUserMutation();
    const onHandleDelete = (id: any) => {
-      remove(id);
+      const confirm = window.confirm('Bạn có chắc muốn xóa sản phẩm này không');
+      if (confirm) {
+         remove(id);
+      }
    };
    return (
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg w-full'>
-         <button className='bg-green-500 text-white w-[70px] h-8 rounded-md '>
-            <Link to={'/signup'}>Add</Link>
+         <button className='bg-green-500 text-white  h-8 rounded-md px-2'>
+            <Link to={'/signup'}>Thêm người dùng</Link>
          </button>
 
          <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400 '>
             <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
                <tr className='items-center text-center'>
                   <th className='px-6 py-3'>STT</th>
-                  <th className='px-6 py-3'>Name</th>
+                  <th className='px-6 py-3'>Tên</th>
                   <th className='px-6 py-3'>Email</th>
-                  <th className='px-6 py-3'>Phone</th>
-                  <th className='px-6 py-3'>Avatar</th>
-                  <th className='px-6 py-3'>Role</th>
+                  <th className='px-6 py-3'>Số điện thoại</th>
+                  <th className='px-6 py-3'>Ảnh</th>
+                  <th className='px-6 py-3'>Vai trò</th>
                   <th className='px-6 py-3'>Action</th>
                </tr>
             </thead>
@@ -41,16 +44,16 @@ const UsersAdminPage = () => {
                      <td className='px-6 py-3'>{item.role}</td>
                      <td className='px-6 py-3'>
                         <button className='bg-blue-500 text-white w-[70px] h-8 rounded-md '>
-                           <Link to={'/admin/detailUser/' + item._id}>Detail</Link>
+                           <Link to={'/admin/detailUser/' + item._id}>Chi tiết</Link>
                         </button>
-                        <button className='bg-blue-500 text-white w-[70px] h-8 rounded-md '>
-                           <Link to={'/admin/updateUser/' + item._id}>Update</Link>
+                        <button className='bg-blue-500 text-white w-[70px] h-8 rounded-md ml-1 '>
+                           <Link to={'/admin/updateUser/' + item._id}>Sửa</Link>
                         </button>
                         <button
                            className='bg-red-500 text-white w-[70px] h-8 rounded-md ml-1'
                            onClick={() => onHandleDelete(item._id)}
                         >
-                           Delete
+                           Xóa
                         </button>
                      </td>
                   </tr>

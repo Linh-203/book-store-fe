@@ -6,7 +6,7 @@ import { message } from 'antd';
 const CartPage = () => {
    const dispatch = useDispatch();
    const cart = useSelector((state: { cart: ICartSlice }) => state?.cart);
-   // console.log(cart.items);
+   // console.log(cart.totalPrice);
 
    const totalProductInCart = useSelector((state: { cart: ICartSlice }) => state?.cart?.items.length);
    const handleInputSize = (e: React.ChangeEvent<HTMLInputElement>, id: string, maxQuantity: number) => {
@@ -134,7 +134,7 @@ const CartPage = () => {
                                     </div>
                                     <div className='flex items-center space-x-4'>
                                        <p className='text-sm'>
-                                          {item.price.toLocaleString('vi-VN', {
+                                          {(item?.price * item.quantity).toLocaleString('vi-VN', {
                                              style: 'currency',
                                              currency: 'VND'
                                           })}

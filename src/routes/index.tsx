@@ -18,6 +18,7 @@ import UserDetail from '../pages/Admin/UserDetail';
 import UserPage from '../pages/User/UserPage/UserPage';
 import DetailProduct from '../pages/User/ProductDetail/ProductDetail';
 import CartPage from '../pages/User/Cart/CartPage';
+import WhishListPage from '../pages/User/WhishList/WishListPage';
 
 const router = createBrowserRouter([
    {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
          {
             path: '/cart',
             element: <CartPage />
+         },
+         {
+            path: '/wishList',
+            element: <WhishListPage />
          }
       ]
    },

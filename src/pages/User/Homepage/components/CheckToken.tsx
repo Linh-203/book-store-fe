@@ -51,7 +51,7 @@ const CheckToken = () => {
                   }
                   trigger='click'
                >
-                  <img src={auth?.user?.avatar} className='w-7  aspect-square m-0 rounded-full cursor-pointer' />
+                  <img src={auth?.user?.avatar} className='w-8  aspect-square m-0  cursor-pointer' />
                </Popover>
             </>
          )}
