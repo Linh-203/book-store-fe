@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 import { useGetAllUsersQuery, useRemoveUserMutation } from '../../services/user.service';
+import { SearchContext } from '../../context/SearchContext';
 const UsersAdminPage = () => {
    const { data } = useGetAllUsersQuery();
    // console.log(data);
+   const { searchTerm } = useContext(SearchContext);
    const [remove] = useRemoveUserMutation();
    const onHandleDelete = (id: any) => {
       const confirm = window.confirm('Bạn có chắc muốn xóa sản phẩm này không');
@@ -10,6 +13,14 @@ const UsersAdminPage = () => {
          remove(id);
       }
    };
+   const filteredProducts = data?.user?.filter((product: any) => {
+      return (
+         product.name.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+         product.email.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+         product.phoneNumber.toString().includes(searchTerm) ||
+         product.role.toLowerCase().includes(searchTerm?.toLowerCase())
+      );
+   });
    return (
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg w-full'>
          <button className='bg-green-500 text-white  h-8 rounded-md px-2'>
@@ -29,7 +40,7 @@ const UsersAdminPage = () => {
                </tr>
             </thead>
             <tbody>
-               {data?.user?.map((item: any, index: any) => (
+               {filteredProducts?.map((item: any, index: any) => (
                   <tr
                      key={index}
                      className='bg-white border-b dark:bg-gray-900 dark:border-gray-700 items-center text-center'

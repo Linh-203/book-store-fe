@@ -1,14 +1,25 @@
 import { Image, Spin, message } from 'antd';
 import { useParams } from 'react-router-dom';
-import { useGetProductByIdQuery } from '../../../services/product.service';
+import { useGetProductByIdQuery, useGetRelatedProductsQuery } from '../../../services/product.service';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../../slices/cartSlice';
 import { useState } from 'react';
 import { addToWishList } from '../../../slices/wishListSlice';
+import HeartIcon from '../../../assets/icons/HeartIcon';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Link } from 'react-router-dom';
+import styles from '../Homepage/components/CardProduct.module.css';
+import CartIcon from '../../../assets/icons/CartIcon';
+import EyeIcon from '../../../assets/icons/EyeIcon';
+import Quickview from '../Homepage/components/Quickview';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 const DetailProduct = () => {
    const [inputQuantity, setinputQuantity] = useState<any>(1);
    const { id } = useParams();
    const { data, isLoading } = useGetProductByIdQuery(id);
+   const [toggle, setToggle] = useState<boolean>(false);
    // console.log(data);
    const handleinputQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (/^[\d.]+$/.test(e.target.value)) {
@@ -70,6 +81,16 @@ const DetailProduct = () => {
    const isAdded = useSelector((state: any) =>
       state?.wishList?.items?.find((item: any) => item?._id === data?.product?._id)
    );
+   const objId = {
+      idCategory: data?.product?.categoryId?._id,
+      idProduct: id
+   };
+   const { data: relatedProductsData } = useGetRelatedProductsQuery(objId!, {
+      skip: !objId.idCategory || !objId.idProduct
+   });
+   const add_product_to_wishList = (product: any) => {
+      dispatch(addToWishList({ ...product, image: product?.image[0]?.url }));
+   };
    return (
       <div>
          {isLoading && !data ? (
@@ -99,7 +120,7 @@ const DetailProduct = () => {
                                  </a>
                                  <img
                                     className='object-contain w-full lg:h-full'
-                                    src={data.product.image[0]?.url}
+                                    src={data?.product?.image[0]?.url}
                                     alt=''
                                  />
                                  <a className='absolute right-0 transform lg:mr-2 top-1/2 translate-1/2' href='#'>
@@ -127,7 +148,7 @@ const DetailProduct = () => {
                                        <Image
                                           preview={true}
                                           className='object-contain w-full lg:h-28'
-                                          src={data.product.image[1]?.url}
+                                          src={data?.product?.image[1]?.url}
                                           alt=''
                                        />
                                     </a>
@@ -140,7 +161,7 @@ const DetailProduct = () => {
                                        <Image
                                           preview={true}
                                           className='object-contain w-full lg:h-28'
-                                          src={data.product.image[2]?.url}
+                                          src={data?.product?.image[2]?.url}
                                           alt=''
                                        />
                                     </a>
@@ -153,7 +174,7 @@ const DetailProduct = () => {
                                        <Image
                                           preview={true}
                                           className='object-contain w-full lg:h-28'
-                                          src={data.product.image[1]?.url}
+                                          src={data?.product?.image[1]?.url}
                                           alt=''
                                        />
                                     </a>
@@ -165,7 +186,7 @@ const DetailProduct = () => {
                                     >
                                        <img
                                           className='object-contain w-full lg:h-28'
-                                          src={data.product.image[2]?.url}
+                                          src={data?.product?.image[2]?.url}
                                           alt=''
                                        />
                                     </a>
@@ -180,7 +201,7 @@ const DetailProduct = () => {
                                     In Stock
                                  </span>
                                  <h2 className='max-w-xl mt-6 mb-6 text-xl font-semibold leading-loose tracking-wide text-gray-700 md:text-2xl dark:text-gray-300'>
-                                    {data.product.name}
+                                    {data?.product?.name}
                                  </h2>
                                  <div className='flex flex-wrap items-center mb-6'>
                                     <ul className='flex mb-4 mr-2 lg:mb-0'>
@@ -250,16 +271,16 @@ const DetailProduct = () => {
                                  </div>
                                  <p className='inline-block text-2xl font-semibold text-gray-700 dark:text-gray-400 '>
                                     <span>
-                                       {data.product.price.toLocaleString('vi-VN', {
+                                       {data?.product?.price?.toLocaleString('vi-VN', {
                                           style: 'currency',
                                           currency: 'VND'
                                        })}
                                     </span>
                                     <span className='ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400'>
-                                       {data.product?.discount > 0
+                                       {data?.product?.discount > 0
                                           ? (
-                                               data.product?.price -
-                                               (data.product?.price * data.product?.discount) / 100
+                                               data?.product?.price -
+                                               (data?.product?.price * data?.product?.discount) / 100
                                             ).toLocaleString('vi-VN', {
                                                style: 'currency',
                                                currency: 'VND'
@@ -271,10 +292,10 @@ const DetailProduct = () => {
 
                               <div className='py-6 mb-6 border-t border-b border-gray-200 dark:border-gray-700'>
                                  <span className='text-base text-blue-500 dark:text-gray-400'>
-                                    Sản phẩm còn lại: {data.product?.maxQuantity}
+                                    Sản phẩm còn lại: {data?.product?.maxQuantity}
                                  </span>
                                  <p className='mt-2 text-sm text-blue-500 dark:text-blue-200'>
-                                    <span className='text-gray-600 dark:text-gray-400'>{data.product.desc}</span>
+                                    <span className='text-gray-600 dark:text-gray-400'>{data?.product?.desc}</span>
                                  </p>
                               </div>
                               <div className='mb-6 '></div>
@@ -360,6 +381,137 @@ const DetailProduct = () => {
                      </div>
                   </div>
                </section>
+               <h1 className='text-center text-4xl font-bold'>Sản phẩm liên quan</h1>
+               <div className=' mx-auto px-[15px] 3xl:w-[100%] 2xl:w-[100%] xl:w-[100%] lg:w-[100%]  md:w-[100%]'>
+                  <Swiper
+                     slidesPerView={4}
+                     spaceBetween={30}
+                     loop={true}
+                     autoplay={{
+                        delay: 2000,
+                        disableOnInteraction: false
+                     }}
+                     breakpoints={{
+                        1201: {
+                           slidesPerView: 4
+                        },
+                        1200: {
+                           slidesPerView: 3
+                        },
+                        767: {
+                           slidesPerView: 3
+                        },
+                        766: {
+                           slidesPerView: 2
+                        },
+                        400: {
+                           slidesPerView: 2
+                        },
+                        1: {
+                           slidesPerView: 1
+                        }
+                     }}
+                     modules={[Autoplay, Navigation, Pagination]}
+                     className='mySwiper py-[30px] w-[100%] items-center'
+                  >
+                     {relatedProductsData?.products?.map((product: any, index: any) => (
+                        <SwiperSlide key={index}>
+                           {toggle && <Quickview product={product} changeToggle={setToggle} />}
+                           <div className={`${styles['wrapper']}`}>
+                              <Link
+                                 to={'/productDetail/' + product._id}
+                                 className={` block relative text-center`}
+                                 onClick={() => window.scroll(0, 0)}
+                              >
+                                 {product?.discount > 0 && (
+                                    <p
+                                       className={`${styles['tail']} absolute top-5 left-5 w-11 py-3 items-center text-center text-[0.8rem] text-white rounded-full bg-[#00ab9f]`}
+                                    >
+                                       -{product?.discount}%
+                                    </p>
+                                 )}
+                                 <div className='relative'>
+                                    <div className='w-full rounded-lg  sm:h-72 lg:h-96 bg-white flex justify-center items-center'>
+                                       <Link to={'/productDetail/' + product._id}>
+                                          <img
+                                             alt='Art'
+                                             src={product?.image[0]?.url}
+                                             className=' w-full object-cover scale-[1] aspect-auto '
+                                          />
+                                       </Link>
+                                    </div>
+                                 </div>
+                                 <h3 className='mt-4 text-[1.1rem] font-semibold text-colorText hover:text-[#00ab9f] '>
+                                    <Link to={'/productDetail/' + product._id}>{product?.name}</Link>
+                                 </h3>
+                                 <div className='flex justify-center items-center w-full gap-3 mt-2'>
+                                    <p className=' text-greenCus text-[#00ab9f] text-lg font-semibold '>
+                                       {product?.discount > 0
+                                          ? (
+                                               product?.price -
+                                               (product?.price * product?.discount) / 100
+                                            ).toLocaleString('vi-VN', {
+                                               style: 'currency',
+                                               currency: 'VND'
+                                            })
+                                          : product?.price.toLocaleString('vi-VN', {
+                                               style: 'currency',
+                                               currency: 'VND'
+                                            })}
+                                    </p>
+                                    {product?.discount > 0 && (
+                                       <del className='text-grayLight100  font-semibold text-lg '>
+                                          {product?.price.toLocaleString('vi-VN', {
+                                             style: 'currency',
+                                             currency: 'VND'
+                                          })}
+                                       </del>
+                                    )}
+                                 </div>
+                              </Link>
+                              <div className={`${styles['mark']}  sm:h-72 lg:h-96`}>
+                                 <div className='flex justify-center items-center w-[50%] gap-3 '>
+                                    <button
+                                       className={`${styles['sub-btn']} p-3 rounded-full bg-greenCus text-white hover:bg-hightLigh duration-200 `}
+                                    >
+                                       <span
+                                          className={`${styles['tooltip-arrow']} absolute min-w-[100px] bg-colorText py-1 top-[-2.5rem] left-[-2rem] text-[#00ab9f]`}
+                                       >
+                                          Add to cart
+                                       </span>
+                                       <Link to={'/productDetail/' + product._id}>
+                                          <CartIcon className='text-[#00ab9f]' />
+                                       </Link>
+                                    </button>
+                                    <button
+                                       className={`${styles['sub-btn']} p-3 rounded-full bg-greenCus text-white hover:bg-hightLigh duration-200`}
+                                       onClick={() => setToggle(true)}
+                                    >
+                                       <span
+                                          className={`${styles['tooltip-arrow']} absolute min-w-[100px] bg-colorText py-1 top-[-2.5rem] left-[-2rem] text-[#00ab9f]`}
+                                       >
+                                          Quick view
+                                       </span>
+                                       <EyeIcon className='text-[#00ab9f]' />
+                                    </button>
+                                    <button
+                                       onClick={() => add_product_to_wishList(product)}
+                                       className={`${styles['sub-btn']} p-3 rounded-full bg-greenCus text-white hover:bg-hightLigh duration-200`}
+                                    >
+                                       <span
+                                          className={`${styles['tooltip-arrow']} absolute min-w-[100px] bg-colorText py-1 top-[-2.5rem] left-[-2rem] text-[#00ab9f]`}
+                                       >
+                                          Wishlist
+                                       </span>
+                                       <HeartIcon className='text-[#00ab9f]' />
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                        </SwiperSlide>
+                     ))}
+                  </Swiper>
+               </div>
             </div>
          )}
       </div>

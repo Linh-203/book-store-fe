@@ -19,6 +19,7 @@ import UserPage from '../pages/User/UserPage/UserPage';
 import DetailProduct from '../pages/User/ProductDetail/ProductDetail';
 import CartPage from '../pages/User/Cart/CartPage';
 import WhishListPage from '../pages/User/WhishList/WishListPage';
+import NotFoundPage from '../pages/User/NotFoundPage/NotFoundPage';
 
 const router = createBrowserRouter([
    {
@@ -54,6 +55,11 @@ const router = createBrowserRouter([
             element: <WhishListPage />
          }
       ]
+   },
+   {
+      path: '*',
+      element: <NotFoundPage />,
+      errorElement: <NotFoundPage />
    },
    {
       path: '/admin',

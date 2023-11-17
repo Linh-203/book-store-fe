@@ -30,6 +30,7 @@ const SignupPage = () => {
 
    const onFinish = (values: AuthSignupInput) => {
       try {
+         // setLoading(true);
          signup({
             ...values,
             avatar:

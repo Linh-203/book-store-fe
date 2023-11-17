@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
    PieChartOutlined,
    // NotificationOutlined,
@@ -7,14 +7,17 @@ import {
    MenuUnfoldOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Layout, Menu, theme } from 'antd';
+import { Button, Layout, Menu, message, theme } from 'antd';
 import { Outlet } from 'react-router';
 import { logoUrl } from '../constants/imageUrl';
 import ProductIcon from '../components/Icons/ProductIcon';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import TicketIcon from '../components/Icons/TicketIcon';
 // import OrderIcon from '../components/Icons/OrderIcon';
 import HeaderAdmin from '../components/layout/Header/HeaderAdmin';
+import { useDispatch, useSelector } from 'react-redux';
+import { useGetTokenQuery } from '../services/auth.service';
+import { saveTokenAndUser } from '../slices/authSlice';
 
 const { Content, Sider } = Layout;
 
@@ -42,15 +45,33 @@ const items: MenuItem[] = [
 ];
 
 const AdminLayout = () => {
+   const { data } = useGetTokenQuery();
+   // console.log(data?.data && data?.accessToken);
+
+   const dispatch = useDispatch();
+
    const [collapsed, setCollapsed] = useState(false);
    const [open, setOpen] = useState(true);
+   const navigate = useNavigate();
    const ButtonTrigger = (
       <button className='bg-greenPrimary text-white w-full font-semibold'>{collapsed ? 'Hiện' : 'Ẩn'}</button>
    );
    const {
       token: { colorBgContainer }
    } = theme.useToken();
-
+   useEffect(() => {
+      if (data?.data && data?.accessToken?.length >= 0) {
+         dispatch(saveTokenAndUser({ accessToken: data?.accessToken, user: data?.data }));
+         if (Object.keys(data?.data)?.length == 0 || data?.data?.role != 'admin') {
+            console.log(data?.data?.role, 222);
+            if (window.location.pathname.match('admin')) {
+               message.warning('Bạn không có quyền để thực hiện hành động này');
+               navigate('/');
+            }
+         }
+      } else {
+      }
+   }, [data]);
    return (
       <Layout style={{ minHeight: '100vh' }}>
          <Sider

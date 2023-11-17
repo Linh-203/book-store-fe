@@ -7,9 +7,11 @@ import { useGetOneUserQuery, useUpdateUserMutation } from '../../services/user.s
 import { uploadImages } from '../../api/upload';
 import { InputProduct } from '../../interfaces/product';
 import UploadButton from '../../components/UploadButton/UploadButton';
+import Loading from '../../components/Loading/Loading';
 const UpdateUser = () => {
    const [form] = Form.useForm();
    const [files, setFiles] = useState<File[]>([]);
+   const [loading, setLoading] = useState<boolean>(false);
    const {
       handleSubmit,
       register,
@@ -28,13 +30,12 @@ const UpdateUser = () => {
          email: data?.user?.email,
          role: data?.user?.role,
          avatar: data?.user?.avatar,
-         // password: data?.user?.password,
-         // confirmPassword: data?.user?.confirmPassword,
          phoneNumber: data?.user?.phoneNumber
       });
    }, [data]);
    const onHandleSubmit = async (item: any) => {
       try {
+         setLoading(true);
          const {
             data: { data }
          } = await uploadImages(files);
@@ -46,12 +47,14 @@ const UpdateUser = () => {
       }
       update({ id: id!, item });
       message.success('User updated successfully');
+      setLoading(false);
       navigate('/admin/user');
    };
    const handleGetFiles = (files: File[]) => {
       form.setFieldValue('images', files);
       setFiles(files);
    };
+   if (loading) return <Loading sreenSize='lg' />;
    return (
       <div>
          <Helmet>
@@ -102,18 +105,6 @@ const UpdateUser = () => {
                   />
                   {errors.password && <span>This field is required</span>}
                </div>
-
-               {/* <div className='mb-4'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2'>confirm Password</label>
-                  <input
-                     {...register('confirmPassword', { required: true, minLength: 3 })}
-                     className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                     type='text'
-                     placeholder='confirmPassword'
-                  />
-                  {errors.confirmPassword && <span>This field is required</span>}
-               </div> */}
-
                <div className='mb-4'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>Current Image</label>
                   <Image width={200} src={data?.user?.avatar} />

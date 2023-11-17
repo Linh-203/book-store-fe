@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useGetAllProductsQuery, useRemoveProductMutation } from '../../services/product.service';
+import { useContext } from 'react';
+import { SearchContext } from '../../context/SearchContext';
 const ProductsAdminPage = () => {
    const { data } = useGetAllProductsQuery();
-   console.log(data);
+   const { searchTerm } = useContext(SearchContext);
+   // console.log(data);
    const [remove] = useRemoveProductMutation();
    const onHandleDelete = (id: any) => {
       const confirm = window.confirm('Bạn có chắc muốn xóa sản phẩm này không');
@@ -10,6 +13,15 @@ const ProductsAdminPage = () => {
          remove(id);
       }
    };
+   const filteredProducts = data?.product.filter((product: any) => {
+      return (
+         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         product.price.toString().includes(searchTerm) ||
+         product.maxQuantity.toString().includes(searchTerm) ||
+         product.categoryId.cateName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         product.discount.toString().includes(searchTerm)
+      );
+   });
    return (
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg w-full'>
          <button className='bg-green-500 text-white px-2 h-8 rounded-md '>
@@ -31,7 +43,7 @@ const ProductsAdminPage = () => {
                </tr>
             </thead>
             <tbody>
-               {data?.product.map((item: any, index) => (
+               {filteredProducts?.map((item: any, index) => (
                   <tr
                      key={index}
                      className='bg-white border-b dark:bg-gray-900 dark:border-gray-700 items-center text-center'

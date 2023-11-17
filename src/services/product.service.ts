@@ -4,7 +4,8 @@ import { IProduct } from '../interfaces/product';
 const productApi = createApi({
    reducerPath: 'products',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://localhost:8000/api'
+      baseUrl: 'http://localhost:8000/api',
+      credentials: 'include'
    }),
    tagTypes: ['products'],
    endpoints: (builder) => ({
@@ -22,10 +23,18 @@ const productApi = createApi({
          }),
          providesTags: ['products']
       }),
+      getRelatedProducts: builder.query({
+         query: ({ idCategory, idProduct }) => {
+            return {
+               url: '/products/related/' + idCategory + '/' + idProduct
+            };
+         }
+      }),
       removeProduct: builder.mutation({
          query: (id: any) => ({
             url: '/products/' + id,
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include'
          }),
          invalidatesTags: ['products']
       }),
@@ -33,7 +42,8 @@ const productApi = createApi({
          query: (item: any) => ({
             url: '/products',
             body: item,
-            method: 'POST'
+            method: 'POST',
+            credentials: 'include'
          }),
          invalidatesTags: ['products']
       }),
@@ -41,7 +51,8 @@ const productApi = createApi({
          query: ({ id, item }) => ({
             url: '/products/' + id,
             body: item,
-            method: 'PATCH'
+            method: 'PATCH',
+            credentials: 'include'
          }),
          invalidatesTags: ['products']
       }),
@@ -61,7 +72,8 @@ export const {
    useAddProductMutation,
    useUpdateProductMutation,
    useRemoveProductMutation,
-   useSearchProductMutation
+   useSearchProductMutation,
+   useGetRelatedProductsQuery
 } = productApi;
 
 export default productApi;

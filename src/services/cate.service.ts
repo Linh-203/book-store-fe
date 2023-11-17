@@ -4,7 +4,8 @@ import { ICategories } from '../interfaces/category';
 const category = createApi({
    reducerPath: 'category',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://localhost:8000/api'
+      baseUrl: 'http://localhost:8000/api',
+      credentials: 'include'
    }),
    tagTypes: ['category'],
    endpoints: (builder) => ({
@@ -25,7 +26,8 @@ const category = createApi({
       removeCate: builder.mutation({
          query: (id: any) => ({
             url: '/categories/' + id,
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include'
          }),
          invalidatesTags: ['category']
       }),
@@ -33,7 +35,8 @@ const category = createApi({
          query: (item: any) => ({
             url: '/categories',
             body: item,
-            method: 'POST'
+            method: 'POST',
+            credentials: 'include'
          }),
          invalidatesTags: ['category']
       }),
@@ -41,7 +44,8 @@ const category = createApi({
          query: ({ id, item }) => ({
             url: '/categories/' + id,
             body: item,
-            method: 'PATCH'
+            method: 'PATCH',
+            credentials: 'include'
          }),
          invalidatesTags: ['category']
       })

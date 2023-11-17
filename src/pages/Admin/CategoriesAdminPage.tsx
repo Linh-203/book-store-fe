@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useGetAllCateQuery, useRemoveCateMutation } from '../../services/cate.service';
+import { useContext } from 'react';
+import { SearchContext } from '../../context/SearchContext';
 const CategoriesAdminPage = () => {
    const { data } = useGetAllCateQuery();
+   console.log(data);
+
+   const { searchTerm } = useContext(SearchContext);
    const [remove] = useRemoveCateMutation();
    const onHandleDelete = (id: any) => {
       const confirm = window.confirm('Bạn có chắc muốn xóa danh mục này không');
@@ -9,6 +14,9 @@ const CategoriesAdminPage = () => {
          remove(id);
       }
    };
+   const filteredCategories = data?.data?.filter((cate: any) => {
+      return cate.cateName?.toLowerCase().includes(searchTerm?.toLowerCase());
+   });
    return (
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg w-full'>
          <button className='bg-green-500 text-white h-8 px-2 rounded-md '>
@@ -24,7 +32,7 @@ const CategoriesAdminPage = () => {
                </tr>
             </thead>
             <tbody>
-               {data?.data?.map((item: any, index) => (
+               {filteredCategories?.map((item: any, index: any) => (
                   <tr
                      key={index}
                      className='bg-white border-b dark:bg-gray-900 dark:border-gray-700 items-center text-center'
