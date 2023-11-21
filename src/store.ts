@@ -3,6 +3,7 @@ import authReducer from './services/auth.service';
 import categoryReducer from './services/cate.service';
 import productReducer from './services/product.service';
 import userSlice from './services/user.service';
+import ordersReducer from './services/order.service';
 import userReducer from './slices/authSlice';
 import cartReducer from './slices/cartSlice';
 import wishListSlice from './slices/wishListSlice';
@@ -11,6 +12,7 @@ export const store = configureStore({
       [authReducer.reducerPath]: authReducer.reducer,
       [categoryReducer.reducerPath]: categoryReducer.reducer,
       [productReducer.reducerPath]: productReducer.reducer,
+      [ordersReducer.reducerPath]: ordersReducer.reducer,
       [userSlice.reducerPath]: userSlice.reducer,
       wishList: wishListSlice.reducer,
       userReducer: userReducer,
@@ -21,7 +23,8 @@ export const store = configureStore({
          userSlice.middleware,
          categoryReducer.middleware,
          productReducer.middleware,
-         authReducer.middleware
+         authReducer.middleware,
+         ordersReducer.middleware
       ])
 });
 

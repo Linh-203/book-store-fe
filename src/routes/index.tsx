@@ -19,7 +19,9 @@ import UserPage from '../pages/User/UserPage/UserPage';
 import DetailProduct from '../pages/User/ProductDetail/ProductDetail';
 import CartPage from '../pages/User/Cart/CartPage';
 import WhishListPage from '../pages/User/WhishList/WishListPage';
+import CheckOutPage from '../pages/User/CheckOutPage/CheckOutPage';
 import NotFoundPage from '../pages/User/NotFoundPage/NotFoundPage';
+import OrderComplete from '../pages/User/OrderComplete/OrderComplete';
 
 const router = createBrowserRouter([
    {
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
          {
             path: '/wishList',
             element: <WhishListPage />
+         },
+         {
+            path: '/checkout',
+            element: <CheckOutPage />
+         },
+         {
+            path: '/orderComplete/:id',
+            element: <OrderComplete />
          }
       ]
    },

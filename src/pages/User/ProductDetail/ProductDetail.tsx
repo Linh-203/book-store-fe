@@ -270,23 +270,34 @@ const DetailProduct = () => {
                                     </a> */}
                                  </div>
                                  <p className='inline-block text-2xl font-semibold text-gray-700 dark:text-gray-400 '>
-                                    <span>
-                                       {data?.product?.price?.toLocaleString('vi-VN', {
-                                          style: 'currency',
-                                          currency: 'VND'
-                                       })}
-                                    </span>
-                                    <span className='ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400'>
-                                       {data?.product?.discount > 0
-                                          ? (
-                                               data?.product?.price -
-                                               (data?.product?.price * data?.product?.discount) / 100
-                                            ).toLocaleString('vi-VN', {
-                                               style: 'currency',
-                                               currency: 'VND'
-                                            })
-                                          : ''}
-                                    </span>
+                                    {data?.product?.discount > 0 ? (
+                                       <div>
+                                          <span>
+                                             {data?.product?.discount > 0
+                                                ? (
+                                                     data?.product?.price -
+                                                     (data?.product?.price * data?.product?.discount) / 100
+                                                  ).toLocaleString('vi-VN', {
+                                                     style: 'currency',
+                                                     currency: 'VND'
+                                                  })
+                                                : ''}
+                                          </span>
+                                          <span className='ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400'>
+                                             {data?.product?.price?.toLocaleString('vi-VN', {
+                                                style: 'currency',
+                                                currency: 'VND'
+                                             })}
+                                          </span>
+                                       </div>
+                                    ) : (
+                                       <span>
+                                          {data?.product?.price?.toLocaleString('vi-VN', {
+                                             style: 'currency',
+                                             currency: 'VND'
+                                          })}
+                                       </span>
+                                    )}
                                  </p>
                               </div>
 

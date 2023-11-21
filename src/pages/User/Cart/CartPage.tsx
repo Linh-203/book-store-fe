@@ -191,19 +191,23 @@ const CartPage = () => {
                      </div>
                      <div className='flex justify-between'>
                         <p className='text-gray-700'>Phí ship</p>
-                        <p className='text-gray-700'>$4.99</p>
+                        <p className='text-gray-700'>0</p>
                      </div>
                      <hr className='my-4' />
                      <div className='flex justify-between'>
                         <p className='text-lg font-bold'>Tổng tiền</p>
                         <div className=''>
-                           <p className='mb-1 text-lg font-bold'>$134.98 USD</p>
+                           <p className='mb-1 text-lg font-bold'>
+                              {cart.totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                           </p>
                            {/* <p className='text-sm text-gray-700'>including VAT</p> */}
                         </div>
                      </div>
-                     <button className='mt-6 w-full rounded-md bg-[#51A55C] py-1.5 font-medium text-blue-50 hover:bg-[#00ab9f]'>
-                        Thanh toán
-                     </button>
+                     <Link to={'/checkout'}>
+                        <button className='mt-6 w-full rounded-md bg-[#51A55C] py-1.5 font-medium text-blue-50 hover:bg-[#00ab9f]'>
+                           Thanh toán
+                        </button>
+                     </Link>
                   </div>
                </div>
             </div>

@@ -9,6 +9,14 @@ export type ICartSlice = {
    totalPrice: number;
    cartName: string;
 };
+export interface ICartItems {
+   _id: string;
+   name: string;
+   image: string;
+   price: number;
+   quantity: number;
+   totalWeight: number;
+}
 const initialState: ICartSlice = {
    name: '',
    email: '',
@@ -111,9 +119,23 @@ const cartSlice = createSlice({
          }, 0);
          state.items = nextCartItems;
          message.success('Cập nhật sản phẩm thành công');
+      },
+      updatePrice: (state, action) => {
+         const value = action.payload;
+
+         state.items.find((item: any) => {
+            if (item?._id === value._id) {
+               item.price = value.price;
+            }
+         });
+         localStorage.setItem(state.cartName, JSON.stringify(state.items));
+         state.totalPrice = state.items.reduce(
+            (accumulator: any, product: any) => accumulator + product.price * product.quantity,
+            0
+         );
       }
    }
 });
-export const { addItem, removeFromCart, updateItem, removeAllProductFromCart, setItem, setCartName } =
+export const { addItem, removeFromCart, updateItem, removeAllProductFromCart, setItem, setCartName, updatePrice } =
    cartSlice.actions;
 export default cartSlice;
