@@ -4,7 +4,7 @@ import { IProduct } from '../interfaces/product';
 const productApi = createApi({
    reducerPath: 'products',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://localhost:8000/api',
+      baseUrl: 'https://bookstore-be-h2gu.onrender.com/api',
       credentials: 'include'
    }),
    tagTypes: ['products'],

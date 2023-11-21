@@ -5,7 +5,7 @@ import { IQueryParam, IResponseHasPaginate } from '../interfaces/base';
 import { paramTransformer } from '../utils/transformParams';
 const orderApi = createApi({
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://localhost:8000/api',
+      baseUrl: 'https://bookstore-be-h2gu.onrender.com/api',
       credentials: 'include',
       prepareHeaders: (headers) => {
          headers.set('Access-Control-Allow-Origin', '*');

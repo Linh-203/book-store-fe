@@ -1,25 +1,22 @@
 import { Helmet } from 'react-helmet';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import type { TabsProps } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetOneUserQuery, useUpdateUserMutation } from '../../services/user.service';
 import { Button } from 'antd';
 import { useForm } from 'react-hook-form';
-import { Divider, Form, Image, message } from 'antd';
+import { Form, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { uploadImages } from '../../api/upload';
-import { InputProduct } from '../../interfaces/product';
-import UploadButton from '../../components/UploadButton/UploadButton';
 import Loading from '../../components/Loading/Loading';
 function UserDetail() {
    const [form] = Form.useForm();
-   const [files, setFiles] = useState<File[]>([]);
+   const [files] = useState<File[]>([]);
    const [loading, setLoading] = useState<boolean>(false);
    const {
       handleSubmit,
       register,
-      reset,
-      formState: { errors }
+      reset
+      // formState: { errors }
    } = useForm();
    const [update] = useUpdateUserMutation();
    const navigate = useNavigate();
@@ -66,10 +63,10 @@ function UserDetail() {
          navigate('/');
       }
    };
-   const handleGetFiles = (files: File[]) => {
-      form.setFieldValue('images', files);
-      setFiles(files);
-   };
+   // const handleGetFiles = (files: File[]) => {
+   //    form.setFieldValue('images', files);
+   //    setFiles(files);
+   // };
    if (loading) return <Loading sreenSize='lg' />;
 
    return (

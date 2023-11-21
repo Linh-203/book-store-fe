@@ -10,6 +10,7 @@ import { setWishListName, setWishList } from '../slices/wishListSlice';
 
 const DefaultLayout = () => {
    const { data } = useGetTokenQuery();
+
    const dispatch = useDispatch();
    useEffect(() => {
       if (data?.data && data?.accessToken) {

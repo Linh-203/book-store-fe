@@ -4,7 +4,7 @@ import { ICategories } from '../interfaces/category';
 const category = createApi({
    reducerPath: 'category',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://localhost:8000/api',
+      baseUrl: 'https://bookstore-be-h2gu.onrender.com/api',
       credentials: 'include'
    }),
    tagTypes: ['category'],

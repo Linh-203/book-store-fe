@@ -5,7 +5,7 @@ import { IUser } from '../interfaces/auth';
 const userApi = createApi({
    reducerPath: 'userApi',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://localhost:8000/api',
+      baseUrl: 'https://bookstore-be-h2gu.onrender.com/api',
       credentials: 'include'
    }),
    tagTypes: ['user'],

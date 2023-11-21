@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-   baseURL: 'http://localhost:8000/api',
+   baseURL: 'https://bookstore-be-h2gu.onrender.com/api',
    // withCredentials: true,
    headers: {
       'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // import TicketIcon from '../components/Icons/TicketIcon';
 // import OrderIcon from '../components/Icons/OrderIcon';
 import HeaderAdmin from '../components/layout/Header/HeaderAdmin';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useGetTokenQuery } from '../services/auth.service';
 import { saveTokenAndUser } from '../slices/authSlice';
 

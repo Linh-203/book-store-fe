@@ -5,7 +5,7 @@ import { AuthLoginInput } from '../interfaces/auth';
 const authApi = createApi({
    reducerPath: 'authApi',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://localhost:8000/api',
+      baseUrl: 'https://bookstore-be-h2gu.onrender.com/api',
       credentials: 'include'
    }),
    tagTypes: ['auth'],
