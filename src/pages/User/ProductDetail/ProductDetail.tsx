@@ -380,12 +380,12 @@ const DetailProduct = () => {
                                  </button>
                               </div>
                               <div className='flex gap-4 mb-6'>
-                                 <a
-                                    href='/cart'
+                                 <Link
+                                    to={'/cart'}
                                     className='w-full px-4 py-3 text-center text-gray-100 bg-blue-600 border border-transparent dark:border-gray-700 hover:border-blue-500 hover:text-blue-700 hover:bg-blue-100 dark:text-gray-400 dark:bg-gray-700 dark:hover:bg-gray-900 rounded-xl'
                                  >
                                     Buy now
-                                 </a>
+                                 </Link>
                               </div>
                            </div>
                         </div>

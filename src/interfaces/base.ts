@@ -33,7 +33,7 @@ export interface IResponseUserHasPaginate<T> {
 }
 
 export interface IResponse<T> {
-   body: T;
+   body: { data: T[] | T };
    message: string;
    status: number;
 }

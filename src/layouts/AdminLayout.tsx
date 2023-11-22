@@ -7,7 +7,7 @@ import {
    MenuUnfoldOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Layout, Menu, message, theme } from 'antd';
+import { Button, Layout, Menu, Spin, message, theme } from 'antd';
 import { Outlet } from 'react-router';
 import { logoUrl } from '../constants/imageUrl';
 import ProductIcon from '../components/Icons/ProductIcon';
@@ -15,9 +15,10 @@ import { Link, useNavigate } from 'react-router-dom';
 // import TicketIcon from '../components/Icons/TicketIcon';
 // import OrderIcon from '../components/Icons/OrderIcon';
 import HeaderAdmin from '../components/layout/Header/HeaderAdmin';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetTokenQuery } from '../services/auth.service';
 import { saveTokenAndUser } from '../slices/authSlice';
+import { setCartName } from '../slices/cartSlice';
 
 const { Content, Sider } = Layout;
 
@@ -45,13 +46,16 @@ const items: MenuItem[] = [
 ];
 
 const AdminLayout = () => {
-   const { data } = useGetTokenQuery();
-   // console.log(data?.data && data?.accessToken);
+   const { data, isLoading } = useGetTokenQuery();
+   console.log(data);
 
    const dispatch = useDispatch();
+   const auth = useSelector((state: any) => state.userReducer);
+   console.log(auth);
 
    const [collapsed, setCollapsed] = useState(false);
    const [open, setOpen] = useState(true);
+   const [checking, setChecking] = useState(true);
    const navigate = useNavigate();
    const ButtonTrigger = (
       <button className='bg-greenPrimary text-white w-full font-semibold'>{collapsed ? 'Hiện' : 'Ẩn'}</button>
@@ -60,18 +64,32 @@ const AdminLayout = () => {
       token: { colorBgContainer }
    } = theme.useToken();
    useEffect(() => {
-      if (data?.data && data?.accessToken?.length >= 0) {
-         dispatch(saveTokenAndUser({ accessToken: data?.accessToken, user: data?.data }));
-         if (Object.keys(data?.data)?.length == 0 || data?.data?.role != 'admin') {
-            console.log(data?.data?.role, 222);
-            if (window.location.pathname.match('admin')) {
-               message.warning('Bạn không có quyền để thực hiện hành động này');
-               navigate('/');
-            }
+      setChecking(true);
+      if (!isLoading && data?.data && Object.keys(auth.user).length == 0) {
+         if (Object.keys(data.data).length > 0) {
+            dispatch(saveTokenAndUser({ accessToken: data.accessToken, user: data.data }));
+            dispatch(setCartName(data.data.email || 'cart'));
+         } else {
+            message.warning('You are not logged in');
+            navigate('/');
          }
-      } else {
+         setChecking(false);
+      } else if (Object.keys(auth.user).length > 0) {
+         if (auth.user.role !== 'admin') {
+            message.warning('You are not allowed to arrive this');
+            navigate('/');
+         }
+         setChecking(false);
       }
-   }, [data]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [data, isLoading, auth.user]);
+   if (checking) {
+      return (
+         <div className='h-screen flex items-center justify-center'>
+            <Spin size='large' />
+         </div>
+      );
+   }
    return (
       <Layout style={{ minHeight: '100vh' }}>
          <Sider

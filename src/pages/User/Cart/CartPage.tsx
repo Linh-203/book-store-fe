@@ -165,12 +165,12 @@ const CartPage = () => {
                            </div>
                         ))}
                         <div className='cart-footer flex justify-between py-[13px] flex-wrap gap-[15px]'>
-                           <a
-                              href='/'
+                           <Link
+                              to={'/'}
                               className='link-to-homepage px-[30px] py-[10px] bg-[#00ab9f] text-white rounded-[5px] transition-colors duration-300 hover:bg-[#333]'
                            >
                               Tiếp Tục Mua Hàng
-                           </a>
+                           </Link>
                            <button
                               onClick={() => dispatch(removeAllProductFromCart())}
                               className='link-to-homepage px-[30px] py-[10px] bg-[#FF0000] text-white rounded-[5px] transition-colors duration-300 hover:bg-[#333333]'

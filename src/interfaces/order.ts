@@ -3,9 +3,9 @@ export interface IOrderDetailProps {
 }
 export interface IProductOrder {
    _id: string;
-   images: string;
+   image: string;
    name: string;
-   weight: number;
+   quantity: number;
    price: number;
 }
 export interface IOrder {

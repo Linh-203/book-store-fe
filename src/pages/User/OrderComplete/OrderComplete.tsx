@@ -1,10 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetOrdersByIdQuery } from '../../../services/order.service';
 
 const OrderComplete = () => {
    const { id } = useParams();
    const { data } = useGetOrdersByIdQuery(id);
-   console.log(data);
+   // console.log(data);
 
    return (
       <div>
@@ -118,9 +118,11 @@ const OrderComplete = () => {
                            </p>
                         </div>
                      </div>
-                     {/* <div className='flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6'>
-                        <h3 className='text-xl dark:text-white font-semibold leading-5 text-gray-800'>Shipping</h3>
-                        <div className='flex justify-between items-start w-full'>
+                     <div className='flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6'>
+                        <h3 className='text-xl dark:text-white font-semibold leading-5 text-gray-800'>
+                           Trở về trang chủ
+                        </h3>
+                        {/* <div className='flex justify-between items-start w-full'>
                            <div className='flex justify-center items-center space-x-4'>
                               <div className='w-8 h-8'>
                                  <img className='w-full h-full' alt='logo' src='https://i.ibb.co/L8KSdNQ/image-3.png' />
@@ -134,13 +136,15 @@ const OrderComplete = () => {
                               </div>
                            </div>
                            <p className='text-lg font-semibold leading-6 dark:text-white text-gray-800'>$8.00</p>
-                        </div>
+                        </div> */}
                         <div className='w-full flex justify-center items-center'>
-                           <button className='hover:bg-black dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white'>
-                              View Carrier Details
-                           </button>
+                           <Link className='py-5 w-96 md:w-full ' to={'/order'}>
+                              <button className='hover:bg-black dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white'>
+                                 Đơn hàng
+                              </button>
+                           </Link>
                         </div>
-                     </div> */}
+                     </div>
                   </div>
                </div>
                <div className='bg-gray-50 dark:bg-gray-800 w-full xl:w-96 flex justify-between items-center md:items-start px-4 py-6 md:p-6 xl:p-8 flex-col'>
@@ -204,8 +208,9 @@ const OrderComplete = () => {
                            </div>
                         </div>
                         <div className='flex w-full justify-center items-center md:justify-start md:items-start'>
+                           {/* <Link></Link> */}
                            <button className='mt-6 md:mt-0 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base  leading-4 text-gray-800'>
-                              Edit Details
+                              Đã nhận được hàng
                            </button>
                         </div>
                      </div>

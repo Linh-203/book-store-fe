@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
 import { CiHeart, CiSearch, CiShoppingBasket } from 'react-icons/ci';
 import SearchFilter from './components/SearchFilter';
-import { Button, Col, Divider, Popover, Row } from 'antd';
+import { Button, Col, Divider, Popover, Row, Tooltip } from 'antd';
 import { useGetAllCateQuery } from '../../../services/cate.service';
 import CheckToken from '../../../pages/User/Homepage/components/CheckToken';
 import { ICartSlice } from '../../../slices/cartSlice';
 import { useSelector } from 'react-redux';
+import { IAuth } from '../../../slices/authSlice';
+import { PiPackageLight } from 'react-icons/pi';
 const Header = () => {
    const { data, isLoading } = useGetAllCateQuery();
-   // console.log(data);
+   const auth = useSelector((state: { userReducer: IAuth }) => state.userReducer);
+   // console.log(auth);
    const totalProductInCart = useSelector((state: { cart: ICartSlice }) => state?.cart?.items.length);
    const totalProductInWishList = useSelector((state: { wishList: any }) => state?.wishList?.items.length);
    return (
@@ -44,6 +47,14 @@ const Header = () => {
                <SearchFilter>
                   <CiSearch className='w-7 h-7' />
                </SearchFilter>
+               {!auth?.accessToken && (
+                  <Link className='ml-[10px]' to='/order'>
+                     <Tooltip title={<span className='text-white font-thin'>Tra cứu đơn hàng</span>}>
+                        {' '}
+                        <PiPackageLight className='w-7 h-7 hover:text-[#d2401e] text-[#6f6f6f]' />
+                     </Tooltip>
+                  </Link>
+               )}
                <Link to={'/cart'}>
                   <Button
                      className='pb-10 border-none hidden opacity-0 invisible md:block md:opacity-100 md:visible'

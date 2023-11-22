@@ -17,7 +17,7 @@ import { addToWishList } from '../../../../slices/wishListSlice';
 import { useDispatch } from 'react-redux';
 import React, { useState } from 'react';
 const FlashSaleCard = React.memo(({ products, link }: Props) => {
-   console.log(products);
+   // console.log(products);
    const dispatch = useDispatch();
    const [toggle, setToggle] = useState<boolean>(false);
    const add_to_wishList = (product: any) => {

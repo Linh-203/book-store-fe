@@ -22,6 +22,8 @@ import WhishListPage from '../pages/User/WhishList/WishListPage';
 import CheckOutPage from '../pages/User/CheckOutPage/CheckOutPage';
 import NotFoundPage from '../pages/User/NotFoundPage/NotFoundPage';
 import OrderComplete from '../pages/User/OrderComplete/OrderComplete';
+import OrderDetail from '../pages/User/OrderPage/OrderDetail';
+import OrderPage from '../pages/User/OrderPage/OrderPage';
 
 const router = createBrowserRouter([
    {
@@ -63,6 +65,14 @@ const router = createBrowserRouter([
          {
             path: '/orderComplete/:id',
             element: <OrderComplete />
+         },
+         {
+            path: '/my-order/:id',
+            element: <OrderDetail />
+         },
+         {
+            path: '/order',
+            element: <OrderPage />
          }
       ]
    },

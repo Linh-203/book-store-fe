@@ -49,9 +49,9 @@ const OrderCheckOut = ({ onSubmit, methods, loadingState }: Iprops) => {
                                     <Link to={'/products/' + item._id} className='block font-bold text-[#333333]'>
                                        {item.name}
                                     </Link>
-                                    <span className='block font-bold mt-[2px]'>
+                                    {/* <span className='block font-bold mt-[2px]'>
                                        Xuất sứ: <span className='font-[500]'>Trung Quốc</span>
-                                    </span>
+                                    </span> */}
                                     <span className='mt-[5px] font-bold'>{item.quantity} X </span>
                                     <span className='mt-[5px] font-bold'>
                                        {item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
@@ -93,7 +93,7 @@ const OrderCheckOut = ({ onSubmit, methods, loadingState }: Iprops) => {
                      </div>
                      <div className='order-details pt-[13px] mt-[13px] flex items-center justify-between border-t border-[#e2e2e2]'>
                         <span className='text-[18px] font-[500]'>Mã giảm giá:</span>
-                        <span className='text-[18px] font-[500]'>1000</span>
+                        <span className='text-[18px] font-[500]'>0</span>
                      </div>
                      <div className='order-details pt-[13px] mt-[13px] flex items-center justify-between border-t border-[#e2e2e2]'>
                         <span className='text-[18px] font-extrabold'>Tổng:</span>
