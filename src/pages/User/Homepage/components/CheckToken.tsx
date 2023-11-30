@@ -4,7 +4,10 @@ import { CiUser } from 'react-icons/ci';
 import { useDispatch, useSelector } from 'react-redux';
 import { IAuth, deleteTokenAndUser } from '../../../../slices/authSlice';
 import { useClearTokenMutation } from '../../../../services/auth.service';
-
+import { PiUserListBold } from 'react-icons/pi';
+import { FiLogIn, FiLogOut } from 'react-icons/fi';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+import { RiBillLine } from 'react-icons/ri';
 const CheckToken = () => {
    const auth = useSelector((state: { userReducer: IAuth }) => state.userReducer);
    // console.log(auth?.user?._id);
@@ -22,12 +25,11 @@ const CheckToken = () => {
                placement='bottom'
                content={
                   <>
-                     <Link className='text-[#00ab9f]' to={'/signup'}>
-                        Đăng ký
+                     <Link to={'/login'} className='flex items-center gap-[5px] py-[5px]'>
+                        <FiLogIn></FiLogIn>Đăng nhập
                      </Link>
-                     <br />
-                     <Link className='text-[#00ab9f]' to={'/login'}>
-                        Đăng nhập
+                     <Link to={'/signup'} className='flex items-center gap-[5px] py-[5px]'>
+                        <AiOutlineUserAdd></AiOutlineUserAdd> Đăng ký
                      </Link>
                   </>
                }
@@ -44,9 +46,40 @@ const CheckToken = () => {
                   placement='bottom'
                   content={
                      <>
-                        <Link to={'/userPage/' + auth?.user?._id}>Tài Khoản</Link>
-                        <br />
-                        <button onClick={() => onHandleLogout()}>Đăng xuất</button>
+                        {auth.user.role === 'member' ? (
+                           <div>
+                              <Link
+                                 to={'/userPage/' + auth?.user?._id}
+                                 className='flex items-center gap-[5px] py-[5px]'
+                              >
+                                 <PiUserListBold></PiUserListBold> Hồ sơ của bạn
+                              </Link>
+                              <button className='flex items-center gap-[5px] py-[5px]' onClick={() => onHandleLogout()}>
+                                 <FiLogOut></FiLogOut>Đăng xuất
+                              </button>
+                              <Link to='/order' className='flex items-center gap-[5px] py-[5px]'>
+                                 <RiBillLine></RiBillLine> Lịch sử mua hàng
+                              </Link>
+                           </div>
+                        ) : (
+                           <div>
+                              <Link to='/admin' className='flex items-center gap-[5px] py-[5px]'>
+                                 <PiUserListBold></PiUserListBold> Quản lý cửa hàng
+                              </Link>
+                              <Link
+                                 to={'/userPage/' + auth?.user?._id}
+                                 className='flex items-center gap-[5px] py-[5px]'
+                              >
+                                 <PiUserListBold></PiUserListBold> Hồ sơ của bạn
+                              </Link>
+                              <Link to='/order' className='flex items-center gap-[5px] py-[5px]'>
+                                 <RiBillLine></RiBillLine> Lịch sử mua hàng
+                              </Link>
+                              <button className='flex items-center gap-[5px] py-[5px]' onClick={() => onHandleLogout()}>
+                                 <FiLogOut></FiLogOut>Đăng xuất
+                              </button>
+                           </div>
+                        )}
                      </>
                   }
                   trigger='click'

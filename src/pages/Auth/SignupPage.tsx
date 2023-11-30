@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSignupMutation } from '../../services/auth.service';
 import { saveTokenAndUser } from '../../slices/authSlice';
-import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
+// import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
 import { RuleObject } from 'antd/es/form';
 import { AuthSignupInput } from '../../interfaces/auth';
 
@@ -110,10 +110,10 @@ const SignupPage = () => {
                   <Input.Password />
                </Form.Item>
                <Form.Item style={{ textAlign: 'center' }}>
-                  <Button className='w-full' size='large' htmlType='submit'>
+                  <Button className='w-full bg-blue-500 text-white' size='large' htmlType='submit'>
                      Đăng ký
                   </Button>
-                  <p style={{ textAlign: 'center' }}>Or</p>
+                  {/* <p style={{ textAlign: 'center' }}>Or</p>
                   <div className='flex gap-1 items-center justify-between'>
                      <Link className='w-full' to={'http://localhost:8000/api/auth/google/login'}>
                         <Button
@@ -137,7 +137,7 @@ const SignupPage = () => {
                            FaceBook
                         </Button>
                      </Link>
-                  </div>
+                  </div> */}
                </Form.Item>
                <Form.Item style={{ textAlign: 'center' }}>
                   <p>

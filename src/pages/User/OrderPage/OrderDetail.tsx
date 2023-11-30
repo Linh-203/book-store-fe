@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { BiChevronLeft } from 'react-icons/bi';
-import { ConfigProvider, Divider, Spin, Steps, message } from 'antd';
+import { ConfigProvider, Divider, Steps, message } from 'antd';
 import style from './OrderDetail.module.css';
 import { useEffect, useState } from 'react';
 import { getDetailOrder } from '../../../api/order';
@@ -8,6 +8,7 @@ import { formatStringToDate, transformCurrency, uppercaseFirstLetter } from '../
 import { ORDER_OF_STATUS, PENDING_ORDER, SHIPPING_ORDER, SUCCESS_ORDER } from '../../../constants/orderStatus';
 import ProductInOrder from './Components/ProductInOrder';
 import { IOrderFull } from '../../../interfaces/order';
+import Loading from '../../../components/Loading/Loading';
 
 const OrderDetail = () => {
    const { id } = useParams();
@@ -36,7 +37,7 @@ const OrderDetail = () => {
          )!
       );
    };
-   if (loading) return <Spin />;
+   if (loading) return <Loading sreenSize='lg' />;
    return (
       <div className=' flex flex-col items-start gap-[30px] max-w-[1520px] m-auto p-10'>
          <Link to='/order' className='flex justify-start items-center gap-[10px] text-black'>

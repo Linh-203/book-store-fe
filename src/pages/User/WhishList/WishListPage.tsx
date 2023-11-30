@@ -98,7 +98,7 @@ const WhishListPage = () => {
                                  <div className='w-full'>
                                     <Link to={`/productDetail/${item._id}`}>
                                        <button className='focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-white   w-full tracking-tight py-4 text-lg leading-4 hover:bg-gray-300 hover:text-gray-800 dark:text-white dark:bg-transparent dark:border-white dark:hover:bg-gray-800 bg-[#00ab9f] border border-gray-800 dark:hover:text-white mb-10'>
-                                          More information
+                                          Chi tiết sản phẩm
                                        </button>
                                     </Link>
                                  </div>

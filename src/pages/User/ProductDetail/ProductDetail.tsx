@@ -1,4 +1,4 @@
-import { Image, Spin, message } from 'antd';
+import { Image, message } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useGetProductByIdQuery, useGetRelatedProductsQuery } from '../../../services/product.service';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +15,7 @@ import CartIcon from '../../../assets/icons/CartIcon';
 import EyeIcon from '../../../assets/icons/EyeIcon';
 import Quickview from '../Homepage/components/Quickview';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import Loading from '../../../components/Loading/Loading';
 const DetailProduct = () => {
    const [inputQuantity, setinputQuantity] = useState<any>(1);
    const { id } = useParams();
@@ -94,7 +95,7 @@ const DetailProduct = () => {
    return (
       <div>
          {isLoading && !data ? (
-            <Spin />
+            <Loading />
          ) : (
             <div>
                <section className='py-10 font-poppins dark:bg-gray-800'>

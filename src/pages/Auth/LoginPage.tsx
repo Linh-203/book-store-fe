@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../../services/auth.service';
 import { saveTokenAndUser } from '../../slices/authSlice';
-import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
+// import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
 import { AuthLoginInput } from '../../interfaces/auth';
 
 const LoginPage = () => {
@@ -74,7 +74,7 @@ const LoginPage = () => {
                   <Button className='w-full bg-blue-500 text-white' size='large' htmlType='submit'>
                      Đăng nhập
                   </Button>
-                  <p style={{ textAlign: 'center' }}>Or</p>
+                  {/* <p style={{ textAlign: 'center' }}>Or</p>
                   <div className='flex gap-1 items-center justify-between'>
                      <Link className='w-full' to={'/'}>
                         <Button
@@ -96,7 +96,7 @@ const LoginPage = () => {
                            FaceBook
                         </Button>
                      </Link>
-                  </div>
+                  </div> */}
                </Form.Item>
                <Form.Item style={{ textAlign: 'center' }}>
                   <p>

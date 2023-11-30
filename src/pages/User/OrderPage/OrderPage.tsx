@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Button, Divider, Space, Spin, Table, Tag, message } from 'antd';
+import { Button, Divider, Space, Table, Tag, message } from 'antd';
 import { useEffect, useState, useCallback } from 'react';
 import { IOrderFull } from '../../../interfaces/order';
 import { getOrderForMember } from '../../../api/order';
@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { IAuth } from '../../../slices/authSlice';
 import FormQuery from './Components/FormQuery';
 import { formatStringToDate } from '../../../helper';
+import Loading from '../../../components/Loading/Loading';
 
 const { Column } = Table;
 
@@ -40,7 +41,7 @@ const OrderPage = () => {
       console.log(invoiceId);
    };
    const handleFindOrder = useCallback((invoiceId: string) => handleSubmit(invoiceId), []);
-   if (loading) return <Spin />;
+   if (loading) return <Loading sreenSize='lg' />;
    return (
       <div className='main'>
          <section className='section-breadcrumb py-[15px] border-b-[1px] border-[#e2e2e2]'>

@@ -7,7 +7,7 @@ import {
    MenuUnfoldOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Layout, Menu, Spin, message, theme } from 'antd';
+import { Button, Layout, Menu, message, theme } from 'antd';
 import { Outlet } from 'react-router';
 import { logoUrl } from '../constants/imageUrl';
 import ProductIcon from '../components/Icons/ProductIcon';
@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useGetTokenQuery } from '../services/auth.service';
 import { saveTokenAndUser } from '../slices/authSlice';
 import { setCartName } from '../slices/cartSlice';
+import Loading from '../components/Loading/Loading';
 
 const { Content, Sider } = Layout;
 
@@ -86,7 +87,7 @@ const AdminLayout = () => {
    if (checking) {
       return (
          <div className='h-screen flex items-center justify-center'>
-            <Spin size='large' />
+            <Loading sreenSize='lg' />
          </div>
       );
    }
